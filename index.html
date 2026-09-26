@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>インボイス登録で確定申告アプリが最大無料 | ハコベル×タックスナップ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@rive-app/canvas@2.7.0"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--brand:#27BA74;--brand-light:#e8f8ef;--brand-dark:#1e9a5e;--bg:#f8faf9;--text:#1a1a1a;--text-sub:#666;--radius:12px;--red:#dc2626}
+html{font-size:16px}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;display:flex;flex-direction:column;-webkit-tap-highlight-color:transparent}
+a{color:var(--brand-dark)}
+
+.progress-wrap{position:fixed;top:0;left:0;right:0;z-index:100;background:#fff;padding:12px 20px 10px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.progress-bar{height:6px;background:#e0e0e0;border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:var(--brand);border-radius:3px;transition:width .4s ease}
+
+.survey-container{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:56px 20px 40px}
+.slide{display:none;width:100%;max-width:480px;animation:slideIn .35s ease;padding-top:16px}
+.slide.active{display:block}
+@keyframes slideIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+
+.rive-wrap{text-align:center;margin-bottom:8px}
+.rive-wrap canvas{width:140px;height:140px}
+.logo-row{display:flex;align-items:center;justify-content:center;gap:10px;margin:8px 0 18px}
+.logo-img{height:24px;width:auto;display:block}
+.logo-x{font-size:.9rem;color:var(--text-sub);font-weight:700}
+.logo-partner{font-size:1.02rem;font-weight:800;color:#1f3a8a;letter-spacing:.02em}
+
+.intro-card{background:#fff;border-radius:20px;padding:20px 20px 26px;text-align:center;position:relative;overflow:hidden;margin-bottom:14px}
+.intro-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#f0fbf5 0%,#fff 62%);z-index:0}
+.intro-card > *{position:relative;z-index:1}
+.intro-deco{position:absolute;font-size:1.1rem;opacity:.5;z-index:1}
+.intro-deco-1{top:14px;left:16px}
+.intro-deco-2{top:14px;right:16px}
+.intro-bubble{display:inline-block;background:#fff;border-radius:16px;padding:8px 18px;font-size:.88rem;font-weight:700;color:var(--brand-dark);box-shadow:0 2px 10px rgba(0,0,0,.08);position:relative;margin-bottom:14px}
+.intro-bubble::after{content:'';position:absolute;bottom:-6px;left:50%;margin-left:-6px;width:12px;height:12px;background:#fff;transform:rotate(45deg)}
+.intro-headline{font-size:1.6rem;font-weight:800;line-height:1.4;margin-bottom:8px;letter-spacing:.01em;word-break:auto-phrase}
+.intro-headline em{font-style:normal;color:var(--brand-dark)}
+.intro-sub{font-size:.88rem;color:var(--text-sub);line-height:1.8;word-break:auto-phrase}
+
+.q-number{font-size:.8rem;font-weight:700;color:var(--brand);margin-bottom:6px}
+.q-title{font-size:1.15rem;font-weight:700;line-height:1.6;margin-bottom:6px;word-break:auto-phrase}
+.q-subtitle{font-size:.8rem;color:var(--text-sub);margin-bottom:20px;word-break:auto-phrase;line-height:1.7}
+.q-hint{font-size:.78rem;color:var(--text-sub);line-height:1.7;background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;margin-bottom:16px;word-break:auto-phrase}
+
+.options{display:flex;flex-direction:column;gap:10px}
+.opt-btn{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:14px 18px;border:2px solid #e5e7eb;border-radius:var(--radius);background:#fff;font-size:.95rem;font-family:inherit;color:var(--text);cursor:pointer;transition:all .15s}
+.opt-btn:active{transform:scale(.98)}
+.opt-btn.selected{border-color:var(--brand);background:var(--brand-light);color:var(--brand-dark);font-weight:500}
+.opt-btn .opt-emoji{font-size:1.2rem;flex-shrink:0}
+.opt-btn .opt-label{flex:1;line-height:1.5;word-break:auto-phrase;overflow-wrap:anywhere}
+.opt-btn .opt-sub{display:block;font-size:.76rem;color:var(--text-sub);font-weight:400;margin-top:3px;line-height:1.5}
+.opt-btn.selected .opt-sub{color:#4a8a67}
+.opt-btn .opt-check{width:20px;height:20px;border:2px solid #d0d0d0;border-radius:50%;margin-left:auto;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.opt-btn.multi .opt-check{border-radius:5px}
+.opt-btn.selected .opt-check{border-color:var(--brand);background:var(--brand)}
+.opt-btn.selected .opt-check::after{content:'✓';color:#fff;font-size:.7rem;font-weight:700}
+
+/* 金額入力 */
+.money-wrap{background:#fff;border:2px solid #e5e7eb;border-radius:var(--radius);padding:14px 16px;display:flex;align-items:center;gap:8px;transition:border-color .2s}
+.money-wrap:focus-within{border-color:var(--brand)}
+.money-input{flex:1;border:none;font-size:1.5rem;font-weight:700;font-family:inherit;text-align:right;background:none;color:var(--text);min-width:0}
+.money-input:focus{outline:none}
+.money-input::placeholder{color:#c8cdd0;font-weight:400}
+.money-unit{font-size:1rem;font-weight:700;color:var(--text-sub);flex-shrink:0}
+.money-yen{font-size:.8rem;color:var(--text-sub);text-align:right;margin-top:8px;min-height:1.2em}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{padding:8px 14px;border:1.5px solid #e5e7eb;border-radius:20px;background:#fff;font-size:.85rem;font-family:inherit;color:var(--text-sub);cursor:pointer}
+.chip:active{transform:scale(.96)}
+.chip.on{border-color:var(--brand);background:var(--brand-light);color:var(--brand-dark);font-weight:700}
+
+/* 入力フォーム */
+.field{margin-bottom:16px}
+.field-label{display:block;font-size:.88rem;font-weight:700;margin-bottom:6px}
+.field-label .req{display:inline-block;font-size:.66rem;font-weight:700;color:#fff;background:var(--brand);padding:1px 6px;border-radius:4px;margin-left:6px;vertical-align:middle}
+.field-label .opt{display:inline-block;font-size:.66rem;font-weight:700;color:var(--text-sub);background:#eceff0;padding:1px 6px;border-radius:4px;margin-left:6px;vertical-align:middle}
+.field-help{font-size:.74rem;color:var(--text-sub);margin-top:5px;line-height:1.6}
+.text-input{width:100%;padding:13px 15px;border:2px solid #e5e7eb;border-radius:var(--radius);font-size:1rem;font-family:inherit;background:#fff;transition:border-color .2s;line-height:1.5}
+.text-input:focus{outline:none;border-color:var(--brand)}
+textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92rem}
+.input-error{border-color:#e74c3c !important}
+.error-msg{font-size:.78rem;color:#e74c3c;margin-top:5px;display:none}
+.error-msg.show{display:block}
+.other-wrap{margin-top:10px;display:none}
+.other-wrap.show{display:block}
+
+/* 同意 */
+.consent-box{background:#fff;border:1px solid #e5e7eb;border-radius:var(--radius);padding:13px 14px;font-size:.76rem;color:var(--text-sub);line-height:1.75;margin:4px 0 10px}
+.consent-check{display:flex;align-items:flex-start;gap:10px;font-size:.86rem;line-height:1.6;cursor:pointer;padding:4px 2px}
+.consent-check input{width:20px;height:20px;accent-color:var(--brand);flex-shrink:0;margin-top:1px}
+
+.btn-next{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:22px;padding:14px 32px;background:var(--brand);color:#fff;border:none;border-radius:var(--radius);font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;transition:all .2s;width:100%;text-decoration:none;text-align:center}
+.btn-next:active{background:var(--brand-dark);transform:scale(.98)}
+.btn-next:disabled{background:#ccc;color:#888;cursor:not-allowed;transform:none}
+.btn-sub{display:flex;align-items:center;justify-content:center;margin-top:10px;padding:13px;background:#fff;border:2px solid var(--brand);color:var(--brand-dark);border-radius:var(--radius);font-size:.95rem;font-weight:700;font-family:inherit;cursor:pointer;width:100%;text-decoration:none}
+.btn-back{display:flex;align-items:center;justify-content:center;margin-top:10px;padding:10px;background:none;border:none;color:var(--text-sub);font-size:.85rem;font-family:inherit;cursor:pointer;width:100%}
+
+/* カード */
+.card{background:#fff;border-radius:16px;padding:18px 18px;margin-bottom:14px;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card-title{font-size:.98rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px;line-height:1.5}
+.card-body{font-size:.86rem;line-height:1.8;word-break:auto-phrase}
+.card-body b{color:var(--brand-dark)}
+.card-note{font-size:.74rem;color:var(--text-sub);line-height:1.7;margin-top:8px}
+
+/* 最大無料の内訳 */
+.free-sum{display:flex;align-items:stretch;gap:8px;margin:6px 0 12px}
+.free-part{flex:1;background:var(--brand-light);border-radius:12px;padding:10px 8px;text-align:center}
+.free-part .who{font-size:.72rem;color:var(--text-sub);font-weight:700}
+.free-part .what{font-size:1.05rem;font-weight:800;color:var(--brand-dark);margin-top:2px;line-height:1.35}
+.free-part .what small{display:block;font-size:.68rem;font-weight:500;color:var(--text-sub)}
+.free-plus{display:flex;align-items:center;font-weight:800;color:var(--brand-dark)}
+.cond-table{width:100%;border-collapse:collapse;font-size:.84rem}
+.cond-table th{text-align:left;font-weight:700;color:var(--text-sub);padding:8px 8px 8px 0;white-space:nowrap;vertical-align:top;width:6.5em}
+.cond-table td{padding:8px 0;border-bottom:1px solid #f0f2f1;line-height:1.6}
+.cond-table tr:last-child td{border-bottom:none}
+
+/* 未確定（？？？）の強調。確定したら CAMPAIGN に値を入れれば消える */
+.tbd{background:#fff3c4;color:#8b6914;font-weight:700;padding:0 4px;border-radius:4px}
+
+/* 注意（消費税） */
+.warn-box{background:#fff7ed;border:2px solid #f0a92e;border-radius:14px;padding:14px 16px;margin-bottom:14px}
+.warn-title{font-size:.93rem;font-weight:700;color:#8b6914;margin-bottom:6px}
+.warn-body{font-size:.83rem;color:#8b6914;line-height:1.75;word-break:auto-phrase}
+
+.intro-note{font-size:.76rem;color:var(--text-sub);line-height:1.8;background:#fff;border:1px solid #e5e7eb;border-radius:var(--radius);padding:12px 14px;margin-bottom:6px}
+
+/* 手順 */
+.steps{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.step-row{display:flex;align-items:flex-start;gap:12px;background:#fff;border-radius:14px;padding:14px 16px;box-shadow:0 1px 6px rgba(0,0,0,.05)}
+.step-num{width:28px;height:28px;flex-shrink:0;border-radius:50%;background:var(--brand);color:#fff;font-size:.85rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+.step-text{flex:1;font-size:.9rem;font-weight:500;text-align:left;line-height:1.6;word-break:auto-phrase}
+.step-text small{display:block;font-size:.76rem;color:var(--text-sub);font-weight:400;margin-top:3px}
+
+.done-hero{background:#fff;border-radius:20px;padding:22px 20px;text-align:center;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.done-icon{font-size:2.2rem;margin-bottom:6px}
+.done-title{font-size:1.2rem;font-weight:800;margin-bottom:6px;line-height:1.5;word-break:auto-phrase}
+.done-sub{font-size:.85rem;color:var(--text-sub);line-height:1.8;word-break:auto-phrase}
+
+/* 診断結果 */
+.result-kicker{font-size:.82rem;font-weight:700;color:var(--brand-dark);background:var(--brand-light);display:inline-block;padding:4px 14px;border-radius:20px;margin-bottom:10px}
+.cmp{display:flex;flex-direction:column;gap:10px}
+.cmp-row{border:2px solid #e5e7eb;border-radius:14px;padding:12px 14px;background:#fff}
+.cmp-row.best{border-color:var(--brand);background:var(--brand-light)}
+.cmp-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.cmp-name{font-size:.88rem;font-weight:700;line-height:1.5}
+.cmp-name small{display:block;font-size:.72rem;color:var(--text-sub);font-weight:400}
+.cmp-val{font-size:1.15rem;font-weight:900;font-variant-numeric:tabular-nums;white-space:nowrap}
+.cmp-diff{font-size:.78rem;font-weight:700;text-align:right;margin-top:2px}
+.cmp-diff.plus{color:#15803d}
+.cmp-diff.minus{color:#b4453c}
+.cmp-badge{display:table;font-size:.68rem;font-weight:700;color:#fff;background:var(--brand);padding:1px 7px;border-radius:4px;margin-bottom:4px}
+.bd{width:100%;border-collapse:collapse;font-size:.86rem}
+.bd td{padding:9px 0;border-bottom:1px solid #f0f0f0;line-height:1.5}
+.bd td:last-child{text-align:right;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;padding-left:10px}
+.bd tr:last-child td{border-bottom:none}
+.bd .plus td:last-child{color:#15803d}
+.bd .minus td:last-child{color:#b4453c}
+.bd small{display:block;font-size:.72rem;color:var(--text-sub)}
+
+.disclaimer{font-size:.72rem;color:#8a8f93;line-height:1.75;margin-top:14px;padding:0 4px}
+.disclaimer b{color:var(--text-sub)}
+
+.loading{display:none;position:fixed;inset:0;background:rgba(255,255,255,.85);z-index:200;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+.loading.show{display:flex}
+.spinner{width:36px;height:36px;border:3px solid #e0e0e0;border-top-color:var(--brand);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="survey-container">
+
+  <!-- ===== ページ① 本企画の趣旨 ===== -->
+  <div class="slide" id="sIntro">
+    <div class="logo-row">
+      <img src="taxnap_logo.png" alt="タックスナップ" class="logo-img">
+      <span class="logo-x">×</span>
+      <span class="logo-partner">ハコベル</span>
+    </div>
+    <div class="intro-card">
+      <span class="intro-deco intro-deco-1">🎁</span>
+      <span class="intro-deco intro-deco-2">🚚</span>
+      <div class="rive-wrap"><canvas id="snappyIntro" width="280" height="280" style="display:none"></canvas><img id="snappyStill" src="snappy.png" alt="" style="width:120px;height:auto"></div>
+      <div class="intro-bubble">ハコベルのドライバーの皆さまへ</div>
+      <h1 class="intro-headline">インボイス登録で<br>確定申告アプリが<br><em>最大無料</em>に！</h1>
+      <p class="intro-sub">インボイス登録＋タックスナップのご利用で、<br>アプリの利用料金が最大無料になります<br>（条件あり）</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎁 「最大無料」の内訳</div>
+      <div class="free-sum">
+        <div class="free-part">
+          <div class="who">タックスナップ</div>
+          <div class="what">1万円割引<small>安心プラン 29,800円→19,800円（税抜）</small></div>
+        </div>
+        <div class="free-plus">＋</div>
+        <div class="free-part">
+          <div class="who">ハコベル</div>
+          <div class="what">残りの金額を<br>お支払い<small>条件を満たした方</small></div>
+        </div>
+      </div>
+      <table class="cond-table">
+        <tr><th>ハコベルが<br>支払う条件</th><td data-cfg="condition"></td></tr>
+        <tr><th>支払う金額</th><td data-cfg="amount"></td></tr>
+        <tr><th>支払時期<br>・方法</th><td data-cfg="payTiming"></td></tr>
+      </table>
+      <div class="card-note">※ 条件を満たさない場合は、1万円割引のみの適用となります<br>※ 割引の受け取りは、Webからのお申し込みに限ります（App Store／Google Playでの購入は対象外）</div>
+    </div>
+
+    <div class="warn-box">
+      <div class="warn-title">⚠️ インボイス登録をすると、消費税の納税が発生します</div>
+      <div class="warn-body">登録すると課税事業者となり、登録日から消費税の申告・納税が必要になります。<br>例：売上500万円の方なら、消費税は<b>年13.6万円</b>（2027年分・3割特例を使った場合）<br>納税額を軽くする特例があります。お得になるかは、次の画面の「診断」で確かめられます。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📈 白色申告から青色申告に切り替えると、手取りアップ</div>
+      <div class="card-body">売上500万円・経費200万円の方の場合、<br>手取りが<b>年＋181,225円</b>アップします（2027年分の試算）。</div>
+      <div class="card-note">※ インボイス登録の有無に関係なく受けられる効果です<br>※ 青色申告特別控除75万円（複式簿記＋e-Tax＋優良な電子帳簿の保存）を使った場合の試算です。実際の金額は人によって異なります</div>
+    </div>
+
+    <div class="intro-note">
+      運営：株式会社タックスナップ<br>
+      お問い合わせ：<span data-cfg="contact"></span><br>
+      入力いただいた情報は、<a href="https://taxnap.com/privacy_policy" target="_blank" rel="noopener">プライバシーポリシー</a>に沿って取り扱います
+    </div>
+
+    <button class="btn-next" onclick="go('sChoice')">次へ →</button>
+  </div>
+
+  <!-- ===== ページ② 選択肢分岐 ===== -->
+  <div class="slide" id="sChoice">
+    <div class="q-number">STEP 1</div>
+    <div class="q-title">ご希望に近いものを選んでください</div>
+    <div class="q-subtitle">あとから変更もできます</div>
+    <div class="options" id="optsChoice"></div>
+    <button class="btn-next" id="nextChoice" disabled onclick="nextFromChoice()">次へ →</button>
+    <button class="btn-back" onclick="goBack()">← 戻る</button>
+  </div>
+
+  <!-- ===== 選択肢1：登録状況 ===== -->
+  <div class="slide" id="sStatus">
+    <div class="q-number">STEP 2</div>
+    <div class="q-title">インボイス登録の状況を教えてください</div>
+    <div class="q-subtitle">最も近いもの1つ</div>
+    <div class="options" id="optsStatus"></div>
+    <button class="btn-next" id="nextStatus" disabled onclick="nextFromStatus()">次へ →</button>
+    <button class="btn-back" onclick="goBack()">← 戻る</button>
+  </div>
+
+  <!-- ===== 選択肢1 Ａ・Ｂ：申請フォームへ ===== -->
+  <div class="slide" id="sApply">
+    <div class="q-number">STEP 3</div>
+    <div class="q-title">申請フォームに入力してください</div>
+    <div class="q-subtitle">送信後、タックスナップの1万円割引クーポンをメールでお送りします</div>
+    <div class="card">
+      <div class="card-title">📝 ご用意いただくもの</div>
+      <div class="card-body" id="applyNeeds"></div>
+    </div>
+    <a class="btn-next" id="applyLink" href="#" target="_blank" rel="noopener">申請フォームへ進む →</a>
+    <div class="card-note" style="text-align:center">Googleフォームが開きます</div>
+    <button class="btn-back" onclick="goBack()">← 戻る</button>
+  </div>
+
+  <!-- ===== 選択肢1 Ｃ：未登録 → 手順の案内を申し込む ===== -->
+  <div class="slide" id="sUnreg">
+    <div class="q-number">STEP 3</div>
+    <div class="q-title">登録手順をお送りします</div>
+    <div class="q-subtitle">登録手順をメールでお送りし、登録番号が届くまでリマインドのメールでお知らせします</div>
+
+    <div class="field">
+      <label class="field-label" for="uName">氏名<span class="req">必須</span></label>
+      <input class="text-input" id="uName" autocomplete="name" placeholder="例 山田 太郎">
+    </div>
+    <div class="field">
+      <label class="field-label" for="uEmail">メールアドレス<span class="req">必須</span></label>
+      <input class="text-input" id="uEmail" type="email" autocomplete="email" placeholder="example@mail.com">
+      <div class="field-help">タックスナップに登録済み（または今後登録する）のメールアドレスをご入力ください</div>
+      <div class="error-msg" id="uEmailError">メールアドレスの形式をご確認ください</div>
+    </div>
+    <div class="field">
+      <label class="field-label" for="uDriver">ハコベルのドライバーID<span class="req">必須</span></label>
+      <input class="text-input" id="uDriver" autocomplete="off" placeholder="例 123456">
+      <div class="field-help">ハコベルのアプリの <span data-cfg="driverIdWhere"></span> で確認できます</div>
+    </div>
+
+    <div class="consent-box">入力内容は、株式会社タックスナップが、インボイス登録手順のご案内・リマインドメールの送信、およびキャンペーン対象者の確認に利用します。対象者の確認のため、ドライバーIDをハコベル株式会社に照会することがあります。</div>
+    <label class="consent-check"><input type="checkbox" id="uConsent"><span><a href="https://taxnap.com/privacy_policy" target="_blank" rel="noopener">プライバシーポリシー</a>と上記の利用目的に同意し、案内メールを受け取ります</span></label>
+
+    <button class="btn-next" id="uSubmit" disabled onclick="submitUnreg()">登録手順を受け取る</button>
+    <button class="btn-back" onclick="goBack()">← 戻る</button>
+  </div>
+
+  <!-- ===== 選択肢1 Ｃ：完了（手順の説明） ===== -->
+  <div class="slide" id="sUnregDone">
+    <div class="done-hero">
+      <div class="done-icon">📩</div>
+      <div class="done-title">登録手順をメールでお送りしました</div>
+      <div class="done-sub">メールが届かない場合は、迷惑メールフォルダもご確認ください</div>
+    </div>
+    <div class="card-title">インボイス登録の手順</div>
+    <div class="steps">
+      <div class="step-row"><span class="step-num">1</span><span class="step-text">税務署に「適格請求書発行事業者の登録申請書」を提出<small>マイナンバーカードがあれば、e-Taxでスマホから提出できます</small></span></div>
+      <div class="step-row"><span class="step-num">2</span><span class="step-text">税務署から登録の通知が届く<small>届くまでの期間は時期により異なります。その間、リマインドのメールでお知らせします</small></span></div>
+      <div class="step-row"><span class="step-num">3</span><span class="step-text">登録番号（T＋13桁）を申請フォームに入力<small>送信後、1万円割引クーポンをメールでお送りします。申請の締切：<span data-cfg="deadline"></span></small></span></div>
+    </div>
+    <div class="warn-box">
+      <div class="warn-title">⚠️ ご注意</div>
+      <div class="warn-body">インボイス登録をすると課税事業者となり、登録日から消費税の申告・納税が必要になります。納税額を軽くする特例については、国税庁の案内をご覧ください。</div>
+    </div>
+    <a class="btn-next" id="ntaLink" href="#" target="_blank" rel="noopener">国税庁の案内を見る →</a>
+  </div>
+
+  <!-- ===== 選択肢2：割引のみ ===== -->
+  <div class="slide" id="sDiscount">
+    <div class="q-number">STEP 2</div>
+    <div class="q-title">1万円割引クーポンをお送りします</div>
+    <div class="q-subtitle">インボイス登録をしなくても、タックスナップの安心プランが1万円割引になります（29,800円→19,800円・税抜）</div>
+
+    <div class="field">
+      <label class="field-label" for="dName">氏名<span class="req">必須</span></label>
+      <input class="text-input" id="dName" autocomplete="name" placeholder="例 山田 太郎">
+    </div>
+    <div class="field">
+      <label class="field-label" for="dEmail">メールアドレス<span class="req">必須</span></label>
+      <input class="text-input" id="dEmail" type="email" autocomplete="email" placeholder="example@mail.com">
+      <div class="field-help">クーポンはこのアドレスにお送りします</div>
+      <div class="error-msg" id="dEmailError">メールアドレスの形式をご確認ください</div>
+    </div>
+    <div class="field">
+      <label class="field-label" for="dDriver">ハコベルのドライバーID<span class="req">必須</span></label>
+      <input class="text-input" id="dDriver" autocomplete="off" placeholder="例 123456">
+      <div class="field-help">ハコベルのアプリの <span data-cfg="driverIdWhere"></span> で確認できます</div>
+    </div>
+    <div class="field">
+      <span class="field-label">インボイス登録をしない理由<span class="opt">任意・複数選択可</span></span>
+      <div class="options" id="optsReason"></div>
+      <div class="other-wrap" id="reasonOtherWrap">
+        <textarea class="text-input" id="reasonOther" rows="2" placeholder="具体的にお聞かせください"></textarea>
+      </div>
+    </div>
+
+    <div class="consent-box">入力内容は、株式会社タックスナップが、クーポンの送付およびキャンペーン対象者の確認に利用します。対象者の確認のため、ドライバーIDをハコベル株式会社に照会することがあります。登録しない理由は集計してキャンペーンの改善に使い、個人が分かる形でハコベル株式会社に提供することはありません。</div>
+    <label class="consent-check"><input type="checkbox" id="dConsent"><span><a href="https://taxnap.com/privacy_policy" target="_blank" rel="noopener">プライバシーポリシー</a>と上記の利用目的に同意します</span></label>
+
+    <button class="btn-next" id="dSubmit" disabled onclick="submitDiscount()">クーポンを受け取る</button>
+    <button class="btn-back" onclick="goBack()">← 戻る</button>
+  </div>
+
+  <!-- ===== 選択肢2：完了 ===== -->
+  <div class="slide" id="sDiscountDone">
+    <div class="done-hero">
+      <div class="done-icon">🎟️</div>
+      <div class="done-title">クーポンをメールでお送りしました</div>
+      <div class="done-sub">メールが届かない場合は、迷惑メールフォルダもご確認ください</div>
+    </div>
+    <div class="card-title">クーポンの使い方</div>
+    <div class="steps">
+      <div class="step-row"><span class="step-num">1</span><span class="step-text">Webからタックスナップにログイン<small>初めての方は新規登録してください</small></span></div>
+      <div class="step-row"><span class="step-num">2</span><span class="step-text">料金プランの画面で「安心プラン」を選ぶ</span></div>
+      <div class="step-row"><span class="step-num">3</span><span class="step-text">クーポンコードを入力してお申し込み<small>App Store／Google Playでの購入には使えません</small></span></div>
+    </div>
+    <a class="btn-next webLink" href="#" target="_blank" rel="noopener">Webでタックスナップを開く →</a>
+  </div>
+
+  <!-- ===== 選択肢3：診断 Q1 申告方法 ===== -->
+  <div class="slide" id="sD1">
+    <div class="q-number">診断 1/3</div>
+    <div class="q-title">いまの確定申告の方法は？</div>
+    <div class="q-subtitle">最も近いもの1つ</div>
+    <div class="options" id="optsMethod"></div>
+    <button class="btn-next" id="nextD1" disabled onclick="go('sD2')">次へ →</button>
+    <button class="btn-back" onclick="goBack()">← 戻る</button>
+  </div>
+
+  <!-- ===== 診断 Q2 売上 ===== -->
+  <div class="slide" id="sD2">
+    <div class="q-number">診断 2/3</div>
+    <div class="q-title">1年間の売上はどのくらいですか？</div>
+    <div class="q-subtitle">ハコベル以外も含めた、入金の合計（税込）。おおよその金額でOK</div>
+    <div class="money-wrap">
+      <input type="text" inputmode="numeric" class="money-input" id="uriage" placeholder="例 500" autocomplete="off">
+      <span class="money-unit">万円</span>
+    </div>
+    <div class="money-yen" id="uriageYen"></div>
+    <div class="chips" id="uriageChips"></div>
+    <button class="btn-next" id="nextD2" disabled onclick="go('sD3')">次へ →</button>
+    <button class="btn-back" onclick="goBack()">← 戻る</button>
+  </div>
+
+  <!-- ===== 診断 Q3 経費 ===== -->
+  <div class="slide" id="sD3">
+    <div class="q-number">診断 3/3</div>
+    <div class="q-title">1年間の経費はどのくらいですか？</div>
+    <div class="q-subtitle">ガソリン代・車両費など、仕事のために使ったお金の合計</div>
+    <div class="q-hint">💡 わからなければ下のボタンで「売上の◯％」を選んでください</div>
+    <div class="money-wrap">
+      <input type="text" inputmode="numeric" class="money-input" id="keihi" placeholder="例 200" autocomplete="off">
+      <span class="money-unit">万円</span>
+    </div>
+    <div class="money-yen" id="keihiYen"></div>
+    <div class="chips" id="keihiChips"></div>
+    <button class="btn-next" id="nextD3" disabled onclick="showDiagnosis()">診断する 📊</button>
+    <button class="btn-back" onclick="goBack()">← 戻る</button>
+  </div>
+
+  <!-- ===== 診断結果 ===== -->
+  <div class="slide" id="sResult">
+    <div class="card" style="text-align:center">
+      <div class="result-kicker">診断結果（2027年分の試算）</div>
+      <div class="card-body" id="resLead"></div>
+    </div>
+
+    <div id="resWarn"></div>
+
+    <div class="card">
+      <div class="card-title">💰 年間の手取りを比べると</div>
+      <div class="cmp" id="resCmp"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📋 差が生まれる理由</div>
+      <table class="bd" id="resBd"></table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">👉 ご希望の方を選んでください</div>
+      <button class="btn-next" style="margin-top:4px" onclick="fromDiagnosis('invoice')">インボイス登録して、アプリを無料にしたい</button>
+      <button class="btn-sub" onclick="fromDiagnosis('discount')">インボイス登録はせず、1万円割引だけ受け取りたい</button>
+    </div>
+
+    <div class="disclaimer" id="resDisclaimer"></div>
+    <button class="btn-back" onclick="restartDiagnosis()">↻ 条件を変えて診断する</button>
+  </div>
+
+</div>
+
+<div class="loading" id="loading"><div class="spinner"></div><div style="font-size:.85rem;color:#666">送信中…</div></div>
+
+<script>
+/* ============================================================
+   【変更箇所①】キャンペーン条件（未確定は '？？？' のまま）
+   ------------------------------------------------------------
+   ここに値を入れると、画面の黄色い「？？？」が置き換わる。
+   HTMLの本文は触らずに済むよう、未確定の値はすべてここに集めている。
+   ============================================================ */
+const CAMPAIGN = {
+  condition:     '？？？',   // ハコベルが支払う条件（例：2027年1〜12月にハコベル経由で◯件以上稼働）
+  amount:        '？？？',   // ハコベルが支払う金額（例：21,780円＝優待価格19,800円の税込額）
+  payTiming:     '？？？',   // 支払時期・方法（例：2028年◯月の報酬と一緒に支払い）
+  contact:       '？？？',   // 問い合わせ窓口（例：タックスナップ公式LINE）
+  deadline:      '？？？',   // 申請の締切日
+  driverIdWhere: '？？？'    // ハコベルのアプリでドライバーIDが見られる場所
+};
+
+/* ============================================================
+   【変更箇所②】連携先（GAS・申請フォーム・申込先）
+   ============================================================ */
+const GAS_URL    = '';   // GAS をデプロイしたら /exec URL を貼る（空のあいだは送信しない）
+const POST_TOKEN = 'taxnap_hacobell_invoice_7f3c9a21e5b84d06';
+const FORM_URL   = 'https://docs.google.com/forms/d/e/1FAIpQLSfKvhI2WkcZrj74RWZ3FIm7m1STfaa9Mw0AEdBtTj2k4T2Tkw/viewform';
+const FORM_STATUS_ENTRY = 'entry.204544470';   // 申請フォーム「登録状況」の設問（事前入力用）
+const WEB_URL    = 'https://app.taxnap.com';
+const NTA_INVOICE_URL = 'https://www.nta.go.jp/taxes/shiraberu/zeimokubetsu/shohi/keigenzeiritsu/invoice.htm';
+
+const params     = new URLSearchParams(location.search);
+const COMPANY_ID = (params.get('c') || 'hacobell').toLowerCase();
+
+/* ============================================================
+   税額計算エンジン（手取りシミュレーションと同一）
+   ------------------------------------------------------------
+   参照実装: taxnap-survey-tedori/index.html の tedori()
+             （03_PRODUCT/alliance/eclart/20260825_ECLART_手取り試算.py）
+   検証値:   売上500万・経費200万・2027年分で 白色 2,140,441 / 青色75万 2,321,666
+   ロジックを変えるときは必ず参照実装と突き合わせる。
+   ============================================================ */
+const NENKIN = 215040;              // 国民年金 年額
+const KOKUHO_RATE = 0.1067;         // 東京23区 所得割（医療＋支援）
+const KOKUHO_KINTO = 66300;         // 均等割（1人）
+const KOKUHO_KAIGO_RATE = 0.0229;   // 40歳以上の介護分 所得割
+const KOKUHO_KAIGO_KINTO = 16200;   // 介護分 均等割
+const KOKUHO_KISO = 430000;         // 国保の基礎控除
+const KOKUHO_CAP = 1090000;         // 賦課限度額
+const JUMIN_KISO = 430000;
+const JUMIN_HIKAZEI = 450000;       // 均等割の非課税限度（単身）
+const JIGYOZEI_KOJO = 2900000;      // 個人事業税の事業主控除
+
+function shotokuZei(k) {
+  k = Math.floor(k / 1000) * 1000;
+  if (k <= 0) return 0;
+  let t;
+  if (k <= 1950000)       t = k * 0.05;
+  else if (k <= 3300000)  t = k * 0.10 - 97500;
+  else if (k <= 6950000)  t = k * 0.20 - 427500;
+  else if (k <= 9000000)  t = k * 0.23 - 636000;
+  else if (k <= 18000000) t = k * 0.33 - 1536000;
+  else if (k <= 40000000) t = k * 0.40 - 2796000;
+  else                    t = k * 0.45 - 4796000;
+  return Math.floor(Math.floor(t * 1.021) / 100) * 100;
+}
+
+function kisoKojo(gokei, year) {
+  if (year === 2026) {
+    if (gokei <= 1320000) return 950000;
+    if (gokei <= 3360000) return 880000;
+    if (gokei <= 4890000) return 680000;
+    if (gokei <= 6550000) return 630000;
+    return 580000;
+  }
+  return 580000;
+}
+
+function tedori(uriage, keihi, aoiroKojo, year, age40, shaho) {
+  const jigyo = Math.max(0, uriage - keihi);
+  const aoiro = Math.min(aoiroKojo, jigyo);
+  const gokei = jigyo - aoiro;
+  const jbase = jigyo - JIGYOZEI_KOJO;
+  const jigyozei = jbase > 0
+    ? Math.floor(Math.floor(jbase / 1000) * 1000 * 0.05 / 100) * 100 : 0;
+  let shahoRyo;
+  if (shaho) {
+    shahoRyo = Math.floor(gokei * 0.15);
+  } else {
+    const rate  = KOKUHO_RATE + (age40 ? KOKUHO_KAIGO_RATE : 0);
+    const kinto = KOKUHO_KINTO + (age40 ? KOKUHO_KAIGO_KINTO : 0);
+    let kokuho = Math.max(0, gokei - KOKUHO_KISO) * rate + kinto;
+    kokuho = Math.min(kokuho, KOKUHO_CAP);
+    shahoRyo = Math.floor(kokuho) + NENKIN;
+  }
+  const shotokuzei = shotokuZei(gokei - shahoRyo - kisoKojo(gokei, year));
+  let juminzei;
+  if (gokei <= JUMIN_HIKAZEI) {
+    juminzei = 0;
+  } else {
+    const kj = gokei - shahoRyo - JUMIN_KISO;
+    juminzei = kj > 0
+      ? Math.floor(Math.floor(kj / 1000) * 1000 * 0.10) - 2500 + 5000 : 5000;
+  }
+  return {
+    jigyo, aoiro, gokei, jigyozei, shaho: shahoRyo, shotokuzei, juminzei,
+    tedori: Math.round(uriage - keihi - jigyozei - shahoRyo - shotokuzei - juminzei)
+  };
+}
+
+/* ============================================================
+   消費税（インボイス登録した場合・2027年分）
+   ------------------------------------------------------------
+   参照: 03_PRODUCT/alliance/20260825_ハコベル_税理士検算用_計算式一覧.md
+   2027・2028年分は3割特例（令和8年度改正。個人・基準期間の課税売上1,000万円以下）
+   課税標準 = 税込売上 × 100/110（千円未満切捨て）
+   国税     = 課税標準 × 7.8% × 30%（百円未満切捨て）
+   地方     = 国税 × 22/78（百円未満切捨て）
+   検証値: 売上500万 → 136,200円
+   税込経理として、納付する消費税は必要経費に入れて手取りを計算する
+   ============================================================ */
+const TOKUREI_RATE = 0.3;
+function shohizei(uriageZeikomi) {
+  const hyojun = Math.floor(uriageZeikomi * 100 / 110 / 1000) * 1000;
+  const koku   = Math.floor(hyojun * 0.078 * TOKUREI_RATE / 100) * 100;
+  const chiho  = Math.floor(koku * 22 / 78 / 100) * 100;
+  return koku + chiho;
+}
+
+// アプリ利用料（安心プラン）。割引後 19,800円（税抜）の税込額
+const APP_PRICE_DISCOUNTED = 21780;
+// 2027年分の青色申告特別控除（いまの申告方法 → 控除額）
+const METHOD_KOJO = {
+  '白色申告':                 0,
+  '青色申告（紙で提出）':      100000,   // 2027年分から複式簿記でも紙提出は10万
+  '青色申告（e-Taxで提出）':   650000,
+  'わからない':               0
+};
+const KOJO_AFTER = 750000;   // タックスナップで複式簿記＋e-Tax＋優良な電子帳簿
+</script>
+<script>
+/* ============================================================
+   設問データ
+   ============================================================ */
+const CHOICES = [
+  {emoji:'🆓', text:'確定申告アプリを無料にしたい', sub:'インボイス登録＋タックスナップのご利用で最大無料', to:'sStatus'},
+  {emoji:'🎟️', text:'初年度の割引だけ受け取りたい', sub:'インボイス登録はしない。1万円割引クーポンを受け取る', to:'sDiscount'},
+  {emoji:'🔍', text:'お得になるか確かめたい', sub:'インボイス未登録の方向け。約1分の診断', to:'sD1'}
+];
+const STATUSES = [
+  {emoji:'✅', key:'A', text:'インボイス登録済みで、ハコベルにも番号を登録済み',
+   formValue:'Ａ：インボイス登録済みで、ハコベルにも番号を登録済み'},
+  {emoji:'📨', key:'B', text:'インボイス登録済みだが、ハコベルにはまだ番号を伝えていない',
+   formValue:'Ｂ：インボイス登録済みだが、ハコベルにはまだ番号を伝えていない'},
+  {emoji:'🆕', key:'C', text:'まだインボイス登録をしていない'}
+];
+const REASONS = [
+  {emoji:'💸', text:'消費税の負担が増えるから'},
+  {emoji:'🌀', text:'手続きが面倒・よくわからないから'},
+  {emoji:'📉', text:'売上が少なく、必要ないと思うから'},
+  {emoji:'🤝', text:'取引先から求められていないから'},
+  {emoji:'✏️', text:'その他', isOther:true}
+];
+const METHODS = [
+  {emoji:'📄', text:'白色申告'},
+  {emoji:'📮', text:'青色申告（紙で提出）'},
+  {emoji:'📱', text:'青色申告（e-Taxで提出）'},
+  {emoji:'❓', text:'わからない', sub:'白色申告として試算します'}
+];
+const URIAGE_CHIPS = [200, 300, 400, 500, 700, 1000];
+const KEIHI_RATIOS = [
+  {label:'売上の20%', r:0.20}, {label:'30%', r:0.30},
+  {label:'40%', r:0.40}, {label:'50%', r:0.50}
+];
+
+const answers = { reasons: [] };
+let current = 'sIntro';
+const history = [];
+let lastDiagnosis = null;
+
+/* ============================================================
+   初期化
+   ============================================================ */
+function init() {
+  // 未確定の条件（？？？）を差し込む
+  document.querySelectorAll('[data-cfg]').forEach(el => {
+    const v = CAMPAIGN[el.dataset.cfg] || '？？？';
+    if (v === '？？？') el.innerHTML = '<span class="tbd">？？？</span>';
+    else el.textContent = v;
+  });
+  document.getElementById('ntaLink').href = NTA_INVOICE_URL;
+  document.querySelectorAll('.webLink').forEach(a => a.href = WEB_URL);
+
+  buildSingle('optsChoice', CHOICES, o => { answers.choice = o; enable('nextChoice'); });
+  buildSingle('optsStatus', STATUSES, o => { answers.status = o; enable('nextStatus'); });
+  buildSingle('optsMethod', METHODS, o => { answers.method = o.text; enable('nextD1'); });
+  buildMulti('optsReason', REASONS);
+  buildMoney();
+  bindForm('u', 'uSubmit');
+  bindForm('d', 'dSubmit');
+  showSlide('sIntro');
+}
+
+function enable(id) { document.getElementById(id).disabled = false; }
+
+function optHtml(opt, multi) {
+  return `<span class="opt-emoji">${opt.emoji}</span>` +
+    `<span class="opt-label">${opt.label || opt.text}` +
+      (opt.sub ? `<span class="opt-sub">${opt.sub}</span>` : '') +
+    `</span><span class="opt-check"></span>`;
+}
+
+function buildSingle(containerId, opts, onPick) {
+  const wrap = document.getElementById(containerId);
+  opts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'opt-btn';
+    btn.setAttribute('aria-pressed', 'false');
+    btn.innerHTML = optHtml(opt);
+    btn.addEventListener('click', () => {
+      wrap.querySelectorAll('.opt-btn').forEach(b => {
+        b.classList.remove('selected'); b.setAttribute('aria-pressed', 'false');
+      });
+      btn.classList.add('selected');
+      btn.setAttribute('aria-pressed', 'true');
+      onPick(opt);
+    });
+    wrap.appendChild(btn);
+  });
+}
+
+function buildMulti(containerId, opts) {
+  const wrap = document.getElementById(containerId);
+  opts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'opt-btn multi';
+    btn.setAttribute('aria-pressed', 'false');
+    btn.innerHTML = optHtml(opt, true);
+    btn.addEventListener('click', () => {
+      const on = !btn.classList.contains('selected');
+      btn.classList.toggle('selected', on);
+      btn.setAttribute('aria-pressed', String(on));
+      answers.reasons = on ? answers.reasons.concat(opt.text)
+                           : answers.reasons.filter(v => v !== opt.text);
+      if (opt.isOther) {
+        document.getElementById('reasonOtherWrap').classList.toggle('show', on);
+        if (!on) document.getElementById('reasonOther').value = '';
+      }
+    });
+    wrap.appendChild(btn);
+  });
+}
+
+/* ===== 入力フォーム（氏名・メール・ドライバーID・同意） ===== */
+function val(id) { return document.getElementById(id).value.trim(); }
+function emailOk(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+function bindForm(prefix, submitId) {
+  const ids = ['Name', 'Email', 'Driver'].map(s => prefix + s);
+  const refresh = () => {
+    const email = val(prefix + 'Email');
+    const ok = val(prefix + 'Name') && emailOk(email) && val(prefix + 'Driver')
+               && document.getElementById(prefix + 'Consent').checked;
+    document.getElementById(submitId).disabled = !ok;
+    const bad = email !== '' && !emailOk(email);
+    document.getElementById(prefix + 'Email').classList.toggle('input-error', bad);
+    document.getElementById(prefix + 'EmailError').classList.toggle('show', bad);
+  };
+  ids.forEach(id => document.getElementById(id).addEventListener('input', refresh));
+  document.getElementById(prefix + 'Consent').addEventListener('change', refresh);
+}
+
+/* ============================================================
+   ナビゲーション
+   ============================================================ */
+// 進捗バーは「その経路で何画面目か」で出す（経路ごとに画面数が違うため割合で表示）
+const PATH_LEN = { sStatus:4, sApply:4, sUnreg:4, sUnregDone:4, sDiscount:3, sDiscountDone:3,
+                   sD1:6, sD2:6, sD3:6, sResult:6 };
+
+function showSlide(id) {
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  current = id;
+  const fill = document.getElementById('progressFill');
+  if (id === 'sIntro') fill.style.width = '0%';
+  else if (/Done$|^sResult$/.test(id)) fill.style.width = '100%';
+  else fill.style.width = Math.min(95, (history.length / (PATH_LEN[id] || 3)) * 100) + '%';
+  window.scrollTo(0, 0);
+}
+
+function go(id) { history.push(current); showSlide(id); }
+function goBack() { const prev = history.pop(); if (prev) showSlide(prev); }
+
+function nextFromChoice() { go(answers.choice.to); }
+
+function nextFromStatus() {
+  const s = answers.status;
+  if (s.key === 'C') { go('sUnreg'); return; }
+  // Ａ・Ｂは申請フォームへ。登録状況を事前入力して二度手間を減らす
+  const url = FORM_URL + '?usp=pp_url&' + FORM_STATUS_ENTRY + '=' + encodeURIComponent(s.formValue);
+  document.getElementById('applyLink').href = url;
+  document.getElementById('applyNeeds').innerHTML = (s.key === 'B'
+    ? '・インボイス登録番号（T＋13桁）<br>' : '') +
+    '・ハコベルのドライバーID<br>・タックスナップに登録しているメールアドレス<br>' +
+    '<span class="card-note">まだタックスナップに登録していない方は、これから登録に使うメールアドレスでOKです</span>';
+  go('sApply');
+}
+
+/* ============================================================
+   送信
+   ============================================================ */
+function post(payload) {
+  payload._token = POST_TOKEN;
+  payload.timestamp = new Date().toISOString();
+  payload.company_id = COMPANY_ID;
+  payload.user_agent = navigator.userAgent;
+  if (!GAS_URL) {
+    console.warn('GAS_URL 未設定のため送信していません', payload);
+    return Promise.resolve();
+  }
+  // no-cors のためレスポンスは読めない。到達確認はスプレッドシートの行で行う
+  return fetch(GAS_URL, {
+    method: 'POST', mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  }).catch(e => console.error('submit error', e));
+}
+
+function withLoading(promise, nextId) {
+  const loading = document.getElementById('loading');
+  loading.classList.add('show');
+  promise.finally(() => { loading.classList.remove('show'); go(nextId); });
+}
+
+function submitUnreg() {
+  document.getElementById('uSubmit').disabled = true;
+  withLoading(post({
+    _kind: 'unregistered',
+    name: val('uName'), email: val('uEmail'), driver_id: val('uDriver'),
+    consent: '同意'
+  }), 'sUnregDone');
+}
+
+function submitDiscount() {
+  document.getElementById('dSubmit').disabled = true;
+  withLoading(post({
+    _kind: 'discount',
+    name: val('dName'), email: val('dEmail'), driver_id: val('dDriver'),
+    reasons: answers.reasons.join(', '), reason_free: val('reasonOther'),
+    consent: '同意'
+  }), 'sDiscountDone');
+}
+
+/* ===== 金額入力（売上・経費） ===== */
+function buildMoney() {
+  const uEl = document.getElementById('uriage');
+  const kEl = document.getElementById('keihi');
+  const uc = document.getElementById('uriageChips');
+  URIAGE_CHIPS.forEach(v => {
+    const c = document.createElement('button');
+    c.type = 'button'; c.className = 'chip'; c.textContent = v + '万';
+    c.addEventListener('click', () => { uEl.value = v; onMoneyInput('uriage'); });
+    uc.appendChild(c);
+  });
+  const kc = document.getElementById('keihiChips');
+  KEIHI_RATIOS.forEach(o => {
+    const c = document.createElement('button');
+    c.type = 'button'; c.className = 'chip'; c.textContent = o.label;
+    c.addEventListener('click', () => {
+      const u = parseMoney('uriage');
+      if (!u) return;
+      kEl.value = Math.round(u * o.r);
+      onMoneyInput('keihi');
+      kc.querySelectorAll('.chip').forEach(x => x.classList.remove('on'));
+      c.classList.add('on');
+    });
+    kc.appendChild(c);
+  });
+  uEl.addEventListener('input', () => onMoneyInput('uriage'));
+  kEl.addEventListener('input', () => {
+    onMoneyInput('keihi');
+    kc.querySelectorAll('.chip').forEach(x => x.classList.remove('on'));
+  });
+}
+
+function parseMoney(id) {
+  const raw = document.getElementById(id).value
+    .replace(/[０-９]/g, s => String.fromCharCode(s.charCodeAt(0) - 0xFEE0))
+    .replace(/[,、\s]/g, '');
+  const n = parseFloat(raw);
+  return (isNaN(n) || n < 0) ? null : n;
+}
+
+function onMoneyInput(id) {
+  const man = parseMoney(id);
+  const yenEl = document.getElementById(id + 'Yen');
+  yenEl.textContent = man !== null ? '= ' + (man * 10000).toLocaleString() + ' 円' : '';
+  if (id === 'uriage') {
+    document.getElementById('nextD2').disabled = (man === null || man <= 0);
+  } else {
+    const u = parseMoney('uriage');
+    const ok = man !== null && u !== null;
+    document.getElementById('nextD3').disabled = !ok;
+    if (ok && man > u) yenEl.textContent += '　⚠️ 経費が売上を超えています';
+  }
+}
+
+/* ============================================================
+   診断
+   ------------------------------------------------------------
+   3つの選び方を 2027年分どうしで比べる（年齢39歳以下・国民健康保険の前提）
+     いまのまま       … いまの申告方法の控除で、インボイス登録なし
+     青色＋割引のみ   … 青色75万、登録なし、アプリ利用料 21,780円
+     青色＋登録       … 青色75万、登録あり（消費税を納付）、アプリ無料（条件達成時）
+   青色への切り替えはインボイス登録とは関係なく受けられるため、
+   「登録したから増えた」と読めないよう内訳で分けて見せる
+   ============================================================ */
+function yen(n) { return n.toLocaleString(); }
+function signed(n) { return (n >= 0 ? '＋' : '−') + yen(Math.abs(n)) + '円'; }
+
+function showDiagnosis() {
+  const uriage = Math.round(parseMoney('uriage') * 10000);
+  const keihi  = Math.round(parseMoney('keihi') * 10000);
+  const kojoNow = METHOD_KOJO[answers.method] || 0;
+
+  const now     = tedori(uriage, keihi, kojoNow, 2027, false, false).tedori;
+  const blueRaw = tedori(uriage, keihi, KOJO_AFTER, 2027, false, false).tedori;
+  const ctax    = shohizei(uriage);
+  const invRaw  = tedori(uriage, keihi + ctax, KOJO_AFTER, 2027, false, false).tedori;
+
+  const blue    = blueRaw - APP_PRICE_DISCOUNTED;   // 割引のみ：アプリ代を払う
+  const invoice = invRaw;                           // 登録：アプリ無料（条件達成時）
+  const invCost = blueRaw - invRaw;                 // 登録による手取りの減少（消費税 − 税金・保険料の減少分）
+  const blueGain = blueRaw - now;                   // 青色に切り替えた効果
+
+  lastDiagnosis = { uriage, keihi, now, blue, invoice, ctax };
+
+  const rows = [
+    { name:'いまのまま', sub: answers.method === 'わからない' ? '白色申告として試算' : answers.method, v: now },
+    { name:'青色申告＋割引のみ', sub:'インボイス登録なし／アプリ利用料 21,780円（税込）', v: blue },
+    { name:'青色申告＋インボイス登録', sub:'消費税を納付／アプリ無料（ハコベルの条件を満たした場合）', v: invoice }
+  ];
+  const best = Math.max(blue, invoice);
+  document.getElementById('resCmp').innerHTML = rows.map((r, i) => {
+    const d = r.v - now;
+    const isBest = i > 0 && r.v === best;
+    return `<div class="cmp-row${isBest ? ' best' : ''}">
+      <div class="cmp-head">
+        <div class="cmp-name">${isBest ? '<span class="cmp-badge">手取りが多い</span>' : ''}${r.name}<small>${r.sub}</small></div>
+        <div class="cmp-val">${yen(r.v)}円</div>
+      </div>
+      ${i > 0 ? `<div class="cmp-diff ${d >= 0 ? 'plus' : 'minus'}">いまより ${signed(d)}</div>` : ''}
+    </div>`;
+  }).join('');
+
+  const diffInvVsBlue = invoice - blue;
+  document.getElementById('resLead').innerHTML = diffInvVsBlue >= 0
+    ? `売上${yen(uriage / 10000)}万円・経費${yen(keihi / 10000)}万円の場合、<br><b>インボイス登録してアプリを無料にした方が</b>、手取りが<b>年${yen(diffInvVsBlue)}円</b>多くなります`
+    : `売上${yen(uriage / 10000)}万円・経費${yen(keihi / 10000)}万円の場合、<br>手取りだけで比べると、<b>インボイス登録をしない方が年${yen(-diffInvVsBlue)}円</b>多くなります`;
+
+  document.getElementById('resBd').innerHTML = `
+    <tr class="${blueGain >= 0 ? 'plus' : 'minus'}"><td>青色申告（75万円控除）に切り替える効果<small>インボイス登録の有無に関係なく受けられます</small></td><td>${signed(blueGain)}</td></tr>
+    <tr class="minus"><td>インボイス登録で納める消費税<small>3割特例を使った場合（2027年分）</small></td><td>−${yen(ctax)}円</td></tr>
+    <tr class="plus"><td>消費税を経費にできることで減る税金・保険料</td><td>＋${yen(ctax - invCost)}円</td></tr>
+    <tr class="plus"><td>アプリ利用料の差<small>登録して条件を満たすと無料／割引のみは21,780円</small></td><td>＋${yen(APP_PRICE_DISCOUNTED)}円</td></tr>`;
+
+  document.getElementById('resWarn').innerHTML = uriage > 10000000
+    ? `<div class="warn-box"><div class="warn-title">⚠️ 売上が1,000万円を超える方へ</div><div class="warn-body">売上が1,000万円を超える年がある方は、すでに消費税の課税事業者である可能性があり、3割特例も使えないことがあります。この診断は目安としてご覧ください。</div></div>`
+    : '';
+
+  document.getElementById('resDisclaimer').innerHTML = `<b>試算の前提</b><br>
+    ・2027年分の税制で計算しています（基礎控除58万円）<br>
+    ・消費税は3割特例（2027・2028年分、基準期間の課税売上1,000万円以下の個人）で計算し、納める消費税は経費に入れています。2029年分以降は計算方法が変わり、負担が増えます<br>
+    ・39歳以下・国民健康保険（東京23区の料率）・単身で計算しています。扶養・各種控除は含みません<br>
+    ・青色申告特別控除75万円は、複式簿記＋e-Tax＋優良な電子帳簿の保存が要件です<br>
+    ・ハコベルからの支払いは、条件を満たした場合のみです（条件：<span class="tbd">${CAMPAIGN.condition}</span>）<br>
+    ・インボイス登録をすると、取引先が消費税の控除を受けられるようになります。手取りだけでなく、お取引の状況も含めてご判断ください<br>
+    ・本試算は概算です。実際の税額は個別の状況により異なります。正式な判断は税理士にご相談ください`;
+  if (CAMPAIGN.condition !== '？？？') {
+    document.querySelector('#resDisclaimer .tbd').outerHTML = CAMPAIGN.condition;
+  }
+
+  // 診断ログは「結果を見た時点」で1行、「案内を選んだ時点」でもう1行（next_choice 入り）送る。
+  // 結果だけ見て離脱した人も数えられるようにするため
+  lastDiagnosis.payload = {
+    _kind: 'diagnosis', method: answers.method, uriage: String(uriage), keihi: String(keihi),
+    tedori_now: String(now), tedori_blue: String(blue), tedori_invoice: String(invoice), ctax: String(ctax)
+  };
+  post(Object.assign({}, lastDiagnosis.payload));
+  go('sResult');
+}
+
+function fromDiagnosis(which) {
+  if (lastDiagnosis) {
+    post(Object.assign({}, lastDiagnosis.payload,
+      { next_choice: which === 'invoice' ? '登録して無料' : '割引のみ' }));
+  }
+  go(which === 'invoice' ? 'sUnreg' : 'sDiscount');
+}
+
+function restartDiagnosis() {
+  history.length = 0;
+  history.push('sIntro', 'sChoice');
+  showSlide('sD1');
+}
+
+/* === Rive === */
+function initRive(canvasId) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas || typeof rive === 'undefined') return;
+  // 読み込めたときだけアニメーションに差し替える（失敗時は静止画のまま）
+  try {
+    new rive.Rive({ src: 'happy.riv', canvas: canvas, autoplay: true, fit: rive.Fit.Contain,
+      onLoad: () => { canvas.style.display = ''; document.getElementById('snappyStill').style.display = 'none'; } });
+  } catch (e) { console.error('rive', e); }
+}
+
+init();
+initRive('snappyIntro');
+window.addEventListener('pageshow', e => { if (e.persisted) location.reload(); });
+</script>
+</body>
+</html>
