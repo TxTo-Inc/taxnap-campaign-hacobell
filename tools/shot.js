@@ -16,7 +16,7 @@ const { chromium } = require('playwright');
   await next(); await shot('02_choice');
 
   // 選択肢1 → Ｂ → 申請フォーム案内
-  await pick('optsChoice', '無料にしたい'); await next();
+  await pick('optsChoice', 'キャッシュバックを受けたい'); await next();
   await pick('optsStatus', 'まだ番号を伝えていない'); await shot('03_status'); await next();
   console.log('Bのフォームリンク:', await p.getAttribute('#applyLink', 'href'));
   await shot('04_apply_B');
@@ -29,7 +29,7 @@ const { chromium } = require('playwright');
   await next(); await p.waitForTimeout(300); await shot('07_unreg_done');
 
   // 選択肢2 → 割引のみ
-  await p.goto(url); await next(); await pick('optsChoice', '割引だけ'); await next();
+  await p.goto(url); await next(); await pick('optsChoice', '初年度割引だけ'); await next();
   await p.fill('#dName', '山田 花子'); await p.fill('#dEmail', 'hanako@example.com'); await p.fill('#dDriver', '999');
   await pick('optsReason', '消費税'); await pick('optsReason', 'その他'); await p.fill('#reasonOther', 'テスト');
   await p.check('#dConsent'); await shot('08_discount'); await next(); await p.waitForTimeout(300); await shot('09_discount_done');

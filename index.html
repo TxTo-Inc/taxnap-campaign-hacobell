@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
-<title>インボイス登録で確定申告アプリが最大無料 | ハコベル×タックスナップ</title>
+<title>1年目の利用料キャッシュバック | ハコベル×タックスナップ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&display=swap" rel="stylesheet">
@@ -35,9 +35,6 @@ a{color:var(--brand-dark)}
 .intro-card{background:#fff;border-radius:20px;padding:20px 20px 26px;text-align:center;position:relative;overflow:hidden;margin-bottom:14px}
 .intro-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#f0fbf5 0%,#fff 62%);z-index:0}
 .intro-card > *{position:relative;z-index:1}
-.intro-deco{position:absolute;font-size:1.1rem;opacity:.5;z-index:1}
-.intro-deco-1{top:14px;left:16px}
-.intro-deco-2{top:14px;right:16px}
 .intro-bubble{display:inline-block;background:#fff;border-radius:16px;padding:8px 18px;font-size:.88rem;font-weight:700;color:var(--brand-dark);box-shadow:0 2px 10px rgba(0,0,0,.08);position:relative;margin-bottom:14px}
 .intro-bubble::after{content:'';position:absolute;bottom:-6px;left:50%;margin-left:-6px;width:12px;height:12px;background:#fff;transform:rotate(45deg)}
 .intro-headline{font-size:1.6rem;font-weight:800;line-height:1.4;margin-bottom:8px;letter-spacing:.01em;word-break:auto-phrase}
@@ -108,7 +105,7 @@ textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92r
 .card-body b{color:var(--brand-dark)}
 .card-note{font-size:.74rem;color:var(--text-sub);line-height:1.7;margin-top:8px}
 
-/* 最大無料の内訳 */
+/* キャッシュバックのしくみ */
 .free-sum{display:flex;align-items:stretch;gap:8px;margin:6px 0 12px}
 .free-part{flex:1;background:var(--brand-light);border-radius:12px;padding:10px 8px;text-align:center}
 .free-part .who{font-size:.72rem;color:var(--text-sub);font-weight:700}
@@ -162,6 +159,11 @@ textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92r
 .bd .plus td:last-child{color:#15803d}
 .bd .minus td:last-child{color:#b4453c}
 .bd small{display:block;font-size:.72rem;color:var(--text-sub)}
+.tedori-table td{text-align:right;font-weight:500;padding:8px 0 8px 6px;font-size:.8rem;white-space:nowrap}
+.tedori-table td:first-child{text-align:left;padding-left:0;font-weight:700}
+.tedori-table td:last-child{font-weight:700}
+.tedori-table .th td{font-size:.7rem;color:var(--text-sub);font-weight:700}
+.tedori-table td.up{color:#15803d}
 
 .disclaimer{font-size:.72rem;color:#8a8f93;line-height:1.75;margin-top:14px;padding:0 4px}
 .disclaimer b{color:var(--text-sub)}
@@ -188,44 +190,52 @@ textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92r
       <span class="logo-partner">ハコベル</span>
     </div>
     <div class="intro-card">
-      <span class="intro-deco intro-deco-1">🎁</span>
-      <span class="intro-deco intro-deco-2">🚚</span>
       <div class="rive-wrap"><canvas id="snappyIntro" width="280" height="280" style="display:none"></canvas><img id="snappyStill" src="snappy.png" alt="" style="width:120px;height:auto"></div>
       <div class="intro-bubble">ハコベルのドライバーの皆さまへ</div>
-      <h1 class="intro-headline">インボイス登録で<br>確定申告アプリが<br><em>最大無料</em>に！</h1>
-      <p class="intro-sub">インボイス登録＋タックスナップのご利用で、<br>アプリの利用料金が最大無料になります<br>（条件あり）</p>
+      <h1 class="intro-headline">インボイス登録＋<br>アプリのご利用で<br><em>1年目の利用料を<br>キャッシュバック</em></h1>
+      <p class="intro-sub">確定申告アプリ「タックスナップ」の<br>1年目の利用料を、条件を満たした方に<br>ハコベルからキャッシュバックします</p>
     </div>
 
     <div class="card">
-      <div class="card-title">🎁 「最大無料」の内訳</div>
+      <div class="card-title">💴 キャッシュバックのしくみ</div>
       <div class="free-sum">
         <div class="free-part">
-          <div class="who">タックスナップ</div>
-          <div class="what">1万円割引<small>安心プラン 29,800円→19,800円（税抜）</small></div>
+          <div class="who">お申し込み時</div>
+          <div class="what">19,800円<small>ハコベル特別価格（1年目）<br>税抜・税込21,780円</small></div>
         </div>
-        <div class="free-plus">＋</div>
+        <div class="free-plus">→</div>
         <div class="free-part">
-          <div class="who">ハコベル</div>
-          <div class="what">残りの金額を<br>お支払い<small>条件を満たした方</small></div>
+          <div class="who">条件を満たすと</div>
+          <div class="what">19,800円<small>をハコベルから<br>キャッシュバック <span data-cfg="cashbackTax"></span></small></div>
         </div>
       </div>
       <table class="cond-table">
-        <tr><th>ハコベルが<br>支払う条件</th><td data-cfg="condition"></td></tr>
-        <tr><th>支払う金額</th><td data-cfg="amount"></td></tr>
-        <tr><th>支払時期<br>・方法</th><td data-cfg="payTiming"></td></tr>
+        <tr><th>条件</th><td>・2027年のハコベル経由の取引額が100万円以上<br>・インボイス番号をハコベルに登録していること</td></tr>
+        <tr><th>時期</th><td>2027年の実績確定後、2028年1月を目処</td></tr>
+        <tr><th>支払方法</th><td data-cfg="payMethod"></td></tr>
       </table>
-      <div class="card-note">※ 条件を満たさない場合は、1万円割引のみの適用となります<br>※ 割引の受け取りは、Webからのお申し込みに限ります（App Store／Google Playでの購入は対象外）</div>
+      <div class="card-note">※ 特別価格（19,800円）は、Webからのお申し込み（安心プラン）に限ります。App Store／Google Playでの購入は対象外です<br>※ インボイス登録をしない方は、特別価格でのご利用のみとなり、キャッシュバックの対象外です<br>※ 翌年からは通常価格でのご利用となります</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📅 申請の目安は12月中旬</div>
+      <div class="card-body">2027年1月1日からインボイス登録を有効にするには、<b>2026年12月17日（木）まで</b>に税務署へ登録を申請する必要があります。<br>キャンペーンの申請締切：<span data-cfg="deadline"></span></div>
     </div>
 
     <div class="warn-box">
       <div class="warn-title">⚠️ インボイス登録をすると、消費税の納税が発生します</div>
-      <div class="warn-body">登録すると課税事業者となり、登録日から消費税の申告・納税が必要になります。<br>例：売上500万円の方なら、消費税は<b>年13.6万円</b>（2027年分・3割特例を使った場合）<br>納税額を軽くする特例があります。お得になるかは、次の画面の「診断」で確かめられます。</div>
+      <div class="warn-body">登録すると課税事業者となり、登録日から消費税の申告・納税が必要になります。<br>例：売上500万円の方なら、消費税は<b>年13.6万円</b>（2027年分・3割特例を使った場合）<br>納税額を軽くする特例があります。ご自身の場合は、次の画面の「診断」で確かめられます。</div>
     </div>
 
     <div class="card">
-      <div class="card-title">📈 白色申告から青色申告に切り替えると、手取りアップ</div>
-      <div class="card-body">売上500万円・経費200万円の方の場合、<br>手取りが<b>年＋181,225円</b>アップします（2027年分の試算）。</div>
-      <div class="card-note">※ インボイス登録の有無に関係なく受けられる効果です<br>※ 青色申告特別控除75万円（複式簿記＋e-Tax＋優良な電子帳簿の保存）を使った場合の試算です。実際の金額は人によって異なります</div>
+      <div class="card-title">📈 白色申告から青色申告に切り替えると、手取りが約16〜18万円アップ</div>
+      <table class="bd tedori-table">
+        <tr class="th"><td>売上</td><td>白色申告</td><td>青色申告</td><td>増える額</td></tr>
+        <tr><td>300万円</td><td>約125.9万円</td><td>約142.3万円</td><td class="up">約16.4万円</td></tr>
+        <tr><td>400万円</td><td>約171.4万円</td><td>約189.5万円</td><td class="up">約18.1万円</td></tr>
+        <tr><td>500万円</td><td>約216.4万円</td><td>約234.5万円</td><td class="up">約18.1万円</td></tr>
+      </table>
+      <div class="card-note">※ 手取りが増えるのは青色申告に切り替えた効果で、インボイス登録の有無には関係ありません<br>※ 2027年分、経費率40%、国民健康保険（東京23区・40歳未満）＋国民年金、基礎控除は令和8・9年分の特例額で試算。青色は控除75万円（複式簿記・e-Tax・優良な電子帳簿の要件あり）。0.1万円単位に四捨五入。実際の金額は人によって異なります</div>
     </div>
 
     <div class="intro-note">
@@ -261,7 +271,7 @@ textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92r
   <div class="slide" id="sApply">
     <div class="q-number">STEP 3</div>
     <div class="q-title">申請フォームに入力してください</div>
-    <div class="q-subtitle">送信後、タックスナップの1万円割引クーポンをメールでお送りします</div>
+    <div class="q-subtitle">送信後、ハコベル特別価格（1年目19,800円）のクーポンをメールでお送りします</div>
     <div class="card">
       <div class="card-title">📝 ご用意いただくもの</div>
       <div class="card-body" id="applyNeeds"></div>
@@ -309,9 +319,9 @@ textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92r
     </div>
     <div class="card-title">インボイス登録の手順</div>
     <div class="steps">
-      <div class="step-row"><span class="step-num">1</span><span class="step-text">税務署に「適格請求書発行事業者の登録申請書」を提出<small>マイナンバーカードがあれば、e-Taxでスマホから提出できます</small></span></div>
+      <div class="step-row"><span class="step-num">1</span><span class="step-text">税務署に「適格請求書発行事業者の登録申請書」を提出<small>マイナンバーカードがあれば、e-Taxでスマホから提出できます。2027年1月1日から登録するには、2026年12月17日（木）までに申請してください</small></span></div>
       <div class="step-row"><span class="step-num">2</span><span class="step-text">税務署から登録の通知が届く<small>届くまでの期間は時期により異なります。その間、リマインドのメールでお知らせします</small></span></div>
-      <div class="step-row"><span class="step-num">3</span><span class="step-text">登録番号（T＋13桁）を申請フォームに入力<small>送信後、1万円割引クーポンをメールでお送りします。申請の締切：<span data-cfg="deadline"></span></small></span></div>
+      <div class="step-row"><span class="step-num">3</span><span class="step-text">登録番号（T＋13桁）を申請フォームに入力<small>入力後、ハコベル特別価格（1年目19,800円）のクーポンをメールでお送りします。申請の締切：<span data-cfg="deadline"></span></small></span></div>
     </div>
     <div class="warn-box">
       <div class="warn-title">⚠️ ご注意</div>
@@ -323,8 +333,8 @@ textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92r
   <!-- ===== 選択肢2：割引のみ ===== -->
   <div class="slide" id="sDiscount">
     <div class="q-number">STEP 2</div>
-    <div class="q-title">1万円割引クーポンをお送りします</div>
-    <div class="q-subtitle">インボイス登録をしなくても、タックスナップの安心プランが1万円割引になります（29,800円→19,800円・税抜）</div>
+    <div class="q-title">ハコベル特別価格のクーポンをお送りします</div>
+    <div class="q-subtitle">インボイス登録をしなくても、タックスナップの安心プランを1年目19,800円（税抜・通常29,800円）でご利用いただけます。<b>キャッシュバックの対象外</b>です</div>
 
     <div class="field">
       <label class="field-label" for="dName">氏名<span class="req">必須</span></label>
@@ -428,14 +438,14 @@ textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92r
     </div>
 
     <div class="card">
-      <div class="card-title">📋 差が生まれる理由</div>
+      <div class="card-title">📋 「青色申告＋インボイス登録」の内訳（いまと比べて）</div>
       <table class="bd" id="resBd"></table>
     </div>
 
     <div class="card">
       <div class="card-title">👉 ご希望の方を選んでください</div>
-      <button class="btn-next" style="margin-top:4px" onclick="fromDiagnosis('invoice')">インボイス登録して、アプリを無料にしたい</button>
-      <button class="btn-sub" onclick="fromDiagnosis('discount')">インボイス登録はせず、1万円割引だけ受け取りたい</button>
+      <button class="btn-next" style="margin-top:4px" onclick="fromDiagnosis('invoice')">インボイス登録して、キャッシュバックを受けたい</button>
+      <button class="btn-sub" onclick="fromDiagnosis('discount')">インボイス登録はせず、初年度割引だけ受けたい</button>
     </div>
 
     <div class="disclaimer" id="resDisclaimer"></div>
@@ -454,13 +464,18 @@ textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92r
    HTMLの本文は触らずに済むよう、未確定の値はすべてここに集めている。
    ============================================================ */
 const CAMPAIGN = {
-  condition:     '？？？',   // ハコベルが支払う条件（例：2027年1〜12月にハコベル経由で◯件以上稼働）
-  amount:        '？？？',   // ハコベルが支払う金額（例：21,780円＝優待価格19,800円の税込額）
-  payTiming:     '？？？',   // 支払時期・方法（例：2028年◯月の報酬と一緒に支払い）
+  // 9/28 提案資料で「本日確認」とした項目。決まったら値を入れる
+  cashbackTax:   '？？？',   // キャッシュバック19,800円が税抜か税込か（例：'（税抜）'）
+  payMethod:     '？？？',   // キャッシュバックの支払方法（例：2028年1月の報酬と一緒に振込）
+  typeA:         '？？？',   // すでにハコベルに番号を登録済みの方（A）もキャッシュバック対象か
+  deadline:      '？？？',   // キャンペーンの申請締切（対象とする登録申請の期限・番号の共有期限）
   contact:       '？？？',   // 問い合わせ窓口（例：タックスナップ公式LINE）
-  deadline:      '？？？',   // 申請の締切日
   driverIdWhere: '？？？'    // ハコベルのアプリでドライバーIDが見られる場所
 };
+
+// キャッシュバックの条件（9/15 石髙さまメール・9/28 提案資料で合意済みの内容）
+const CASHBACK = 19800;              // 2028年1月を目処にハコベルから
+const CASHBACK_MIN_TRADE = 1000000;  // 2027年のハコベル経由取引額
 
 /* ============================================================
    【変更箇所②】連携先（GAS・申請フォーム・申込先）
@@ -478,10 +493,12 @@ const COMPANY_ID = (params.get('c') || 'hacobell').toLowerCase();
 /* ============================================================
    税額計算エンジン（手取りシミュレーションと同一）
    ------------------------------------------------------------
-   参照実装: taxnap-survey-tedori/index.html の tedori()
-             （03_PRODUCT/alliance/eclart/20260825_ECLART_手取り試算.py）
-   検証値:   売上500万・経費200万・2027年分で 白色 2,140,441 / 青色75万 2,321,666
-   ロジックを変えるときは必ず参照実装と突き合わせる。
+   土台: taxnap-survey-tedori/index.html の tedori()。基礎控除だけ令和8・9年分に更新
+   検証値（9/28 ハコベル提案資料 P12 の表と一致・2027年分・経費率40%）:
+     売上300万 白色 125.9万 / 青色75万 142.3万 / 差 16.4万
+     売上400万 白色 171.4万 / 青色75万 189.5万 / 差 18.1万
+     売上500万 白色 216.4万 / 青色75万 234.5万 / 差 18.1万
+   ロジックを変えるときは必ず上の値で確認する。
    ============================================================ */
 const NENKIN = 215040;              // 国民年金 年額
 const KOKUHO_RATE = 0.1067;         // 東京23区 所得割（医療＋支援）
@@ -508,15 +525,14 @@ function shotokuZei(k) {
   return Math.floor(Math.floor(t * 1.021) / 100) * 100;
 }
 
+// 所得税の基礎控除（令和8年度改正後。令和8・9年分＝2026・2027年分は同じ特例額）
+// 本則62万＋特例加算。合計所得132万以下99万／489万以下104万／655万以下67万／それ超62万
+// ※手取りシミュレーション（taxnap-survey-tedori）は改正前の値のままなので流用時に注意
 function kisoKojo(gokei, year) {
-  if (year === 2026) {
-    if (gokei <= 1320000) return 950000;
-    if (gokei <= 3360000) return 880000;
-    if (gokei <= 4890000) return 680000;
-    if (gokei <= 6550000) return 630000;
-    return 580000;
-  }
-  return 580000;
+  if (gokei <= 1320000) return 990000;
+  if (gokei <= 4890000) return 1040000;
+  if (gokei <= 6550000) return 670000;
+  return 620000;
 }
 
 function tedori(uriage, keihi, aoiroKojo, year, age40, shaho) {
@@ -570,7 +586,7 @@ function shohizei(uriageZeikomi) {
   return koku + chiho;
 }
 
-// アプリ利用料（安心プラン）。割引後 19,800円（税抜）の税込額
+// アプリ利用料（安心プラン・ハコベル特別価格の1年目）。19,800円（税抜）の税込額
 const APP_PRICE_DISCOUNTED = 21780;
 // 2027年分の青色申告特別控除（いまの申告方法 → 控除額）
 const METHOD_KOJO = {
@@ -586,9 +602,9 @@ const KOJO_AFTER = 750000;   // タックスナップで複式簿記＋e-Tax＋�
    設問データ
    ============================================================ */
 const CHOICES = [
-  {emoji:'🆓', text:'確定申告アプリを無料にしたい', sub:'インボイス登録＋タックスナップのご利用で最大無料', to:'sStatus'},
-  {emoji:'🎟️', text:'初年度の割引だけ受け取りたい', sub:'インボイス登録はしない。1万円割引クーポンを受け取る', to:'sDiscount'},
-  {emoji:'🔍', text:'お得になるか確かめたい', sub:'インボイス未登録の方向け。約1分の診断', to:'sD1'}
+  {emoji:'💴', text:'1年目の利用料のキャッシュバックを受けたい', sub:'インボイス登録＋タックスナップのご利用（条件あり）', to:'sStatus'},
+  {emoji:'🎟️', text:'初年度割引だけ受けたい', sub:'インボイス登録はしない。1年目19,800円で利用（キャッシュバック対象外）', to:'sDiscount'},
+  {emoji:'🔍', text:'お得になるか確かめたい', sub:'インボイス未登録の方向け。売上・経費・いまの申告方法から約1分で診断', to:'sD1'}
 ];
 const STATUSES = [
   {emoji:'✅', key:'A', text:'インボイス登録済みで、ハコベルにも番号を登録済み',
@@ -626,11 +642,7 @@ let lastDiagnosis = null;
    ============================================================ */
 function init() {
   // 未確定の条件（？？？）を差し込む
-  document.querySelectorAll('[data-cfg]').forEach(el => {
-    const v = CAMPAIGN[el.dataset.cfg] || '？？？';
-    if (v === '？？？') el.innerHTML = '<span class="tbd">？？？</span>';
-    else el.textContent = v;
-  });
+  document.querySelectorAll('[data-cfg]').forEach(el => { el.innerHTML = cfgHtml(el.dataset.cfg); });
   document.getElementById('ntaLink').href = NTA_INVOICE_URL;
   document.querySelectorAll('.webLink').forEach(a => a.href = WEB_URL);
 
@@ -642,6 +654,13 @@ function init() {
   bindForm('u', 'uSubmit');
   bindForm('d', 'dSubmit');
   showSlide('sIntro');
+}
+
+// 未確定（？？？）は黄色で目立たせる。確定値はテキストとしてそのまま出す
+function cfgHtml(key) {
+  const v = CAMPAIGN[key] || '？？？';
+  if (v === '？？？') return '<span class="tbd">？？？</span>';
+  const d = document.createElement('span'); d.textContent = v; return d.innerHTML;
 }
 
 function enable(id) { document.getElementById(id).disabled = false; }
@@ -747,7 +766,8 @@ function nextFromStatus() {
   document.getElementById('applyNeeds').innerHTML = (s.key === 'B'
     ? '・インボイス登録番号（T＋13桁）<br>' : '') +
     '・ハコベルのドライバーID<br>・タックスナップに登録しているメールアドレス<br>' +
-    '<span class="card-note">まだタックスナップに登録していない方は、これから登録に使うメールアドレスでOKです</span>';
+    '<span class="card-note">まだタックスナップに登録していない方は、これから登録に使うメールアドレスでOKです</span>' +
+    (s.key === 'A' ? '<span class="card-note">※ すでにハコベルに番号を登録済みの方のキャッシュバックの扱い：' + cfgHtml('typeA') + '</span>' : '');
   go('sApply');
 }
 
@@ -855,8 +875,9 @@ function onMoneyInput(id) {
    ------------------------------------------------------------
    3つの選び方を 2027年分どうしで比べる（年齢39歳以下・国民健康保険の前提）
      いまのまま       … いまの申告方法の控除で、インボイス登録なし
-     青色＋割引のみ   … 青色75万、登録なし、アプリ利用料 21,780円
-     青色＋登録       … 青色75万、登録あり（消費税を納付）、アプリ無料（条件達成時）
+     青色＋割引のみ   … 青色75万、登録なし、アプリ利用料 21,780円（キャッシュバック対象外）
+     青色＋登録       … 青色75万、登録あり（消費税を納付）、アプリ利用料 21,780円から
+                        条件達成で19,800円がキャッシュバック（実質 1,980円）
    青色への切り替えはインボイス登録とは関係なく受けられるため、
    「登録したから増えた」と読めないよう内訳で分けて見せる
    ============================================================ */
@@ -873,8 +894,8 @@ function showDiagnosis() {
   const ctax    = shohizei(uriage);
   const invRaw  = tedori(uriage, keihi + ctax, KOJO_AFTER, 2027, false, false).tedori;
 
-  const blue    = blueRaw - APP_PRICE_DISCOUNTED;   // 割引のみ：アプリ代を払う
-  const invoice = invRaw;                           // 登録：アプリ無料（条件達成時）
+  const blue    = blueRaw - APP_PRICE_DISCOUNTED;              // 割引のみ：アプリ代を払う
+  const invoice = invRaw - (APP_PRICE_DISCOUNTED - CASHBACK);  // 登録：条件達成でキャッシュバック
   const invCost = blueRaw - invRaw;                 // 登録による手取りの減少（消費税 − 税金・保険料の減少分）
   const blueGain = blueRaw - now;                   // 青色に切り替えた効果
 
@@ -883,7 +904,7 @@ function showDiagnosis() {
   const rows = [
     { name:'いまのまま', sub: answers.method === 'わからない' ? '白色申告として試算' : answers.method, v: now },
     { name:'青色申告＋割引のみ', sub:'インボイス登録なし／アプリ利用料 21,780円（税込）', v: blue },
-    { name:'青色申告＋インボイス登録', sub:'消費税を納付／アプリ無料（ハコベルの条件を満たした場合）', v: invoice }
+    { name:'青色申告＋インボイス登録', sub:'消費税を納付／アプリ利用料 21,780円から19,800円をキャッシュバック（条件を満たした場合）', v: invoice }
   ];
   const best = Math.max(blue, invoice);
   document.getElementById('resCmp').innerHTML = rows.map((r, i) => {
@@ -900,30 +921,28 @@ function showDiagnosis() {
 
   const diffInvVsBlue = invoice - blue;
   document.getElementById('resLead').innerHTML = diffInvVsBlue >= 0
-    ? `売上${yen(uriage / 10000)}万円・経費${yen(keihi / 10000)}万円の場合、<br><b>インボイス登録してアプリを無料にした方が</b>、手取りが<b>年${yen(diffInvVsBlue)}円</b>多くなります`
+    ? `売上${yen(uriage / 10000)}万円・経費${yen(keihi / 10000)}万円の場合、<br><b>インボイス登録してキャッシュバックを受けた方が</b>、手取りが<b>年${yen(diffInvVsBlue)}円</b>多くなります`
     : `売上${yen(uriage / 10000)}万円・経費${yen(keihi / 10000)}万円の場合、<br>手取りだけで比べると、<b>インボイス登録をしない方が年${yen(-diffInvVsBlue)}円</b>多くなります`;
 
   document.getElementById('resBd').innerHTML = `
     <tr class="${blueGain >= 0 ? 'plus' : 'minus'}"><td>青色申告（75万円控除）に切り替える効果<small>インボイス登録の有無に関係なく受けられます</small></td><td>${signed(blueGain)}</td></tr>
     <tr class="minus"><td>インボイス登録で納める消費税<small>3割特例を使った場合（2027年分）</small></td><td>−${yen(ctax)}円</td></tr>
     <tr class="plus"><td>消費税を経費にできることで減る税金・保険料</td><td>＋${yen(ctax - invCost)}円</td></tr>
-    <tr class="plus"><td>アプリ利用料の差<small>登録して条件を満たすと無料／割引のみは21,780円</small></td><td>＋${yen(APP_PRICE_DISCOUNTED)}円</td></tr>`;
+    <tr class="minus"><td>アプリ利用料（1年目）<small>ハコベル特別価格 19,800円（税込21,780円）</small></td><td>−${yen(APP_PRICE_DISCOUNTED)}円</td></tr>
+    <tr class="plus"><td>キャッシュバック<small>2027年のハコベル経由取引額100万円以上・番号の登録が条件。2028年1月を目処</small></td><td>＋${yen(CASHBACK)}円</td></tr>`;
 
   document.getElementById('resWarn').innerHTML = uriage > 10000000
     ? `<div class="warn-box"><div class="warn-title">⚠️ 売上が1,000万円を超える方へ</div><div class="warn-body">売上が1,000万円を超える年がある方は、すでに消費税の課税事業者である可能性があり、3割特例も使えないことがあります。この診断は目安としてご覧ください。</div></div>`
     : '';
 
   document.getElementById('resDisclaimer').innerHTML = `<b>試算の前提</b><br>
-    ・2027年分の税制で計算しています（基礎控除58万円）<br>
+    ・2027年分の税制で計算しています（基礎控除は令和8・9年分の特例額）<br>
     ・消費税は3割特例（2027・2028年分、基準期間の課税売上1,000万円以下の個人）で計算し、納める消費税は経費に入れています。2029年分以降は計算方法が変わり、負担が増えます<br>
     ・39歳以下・国民健康保険（東京23区の料率）・単身で計算しています。扶養・各種控除は含みません<br>
     ・青色申告特別控除75万円は、複式簿記＋e-Tax＋優良な電子帳簿の保存が要件です<br>
-    ・ハコベルからの支払いは、条件を満たした場合のみです（条件：<span class="tbd">${CAMPAIGN.condition}</span>）<br>
+    ・キャッシュバックは、2027年のハコベル経由取引額が100万円以上で、インボイス番号をハコベルに登録している方が対象です（2028年1月を目処）。キャッシュバックは2028年に受け取るため、実際の入金は2027年分の手取りより後になります<br>
     ・インボイス登録をすると、取引先が消費税の控除を受けられるようになります。手取りだけでなく、お取引の状況も含めてご判断ください<br>
     ・本試算は概算です。実際の税額は個別の状況により異なります。正式な判断は税理士にご相談ください`;
-  if (CAMPAIGN.condition !== '？？？') {
-    document.querySelector('#resDisclaimer .tbd').outerHTML = CAMPAIGN.condition;
-  }
 
   // 診断ログは「結果を見た時点」で1行、「案内を選んだ時点」でもう1行（next_choice 入り）送る。
   // 結果だけ見て離脱した人も数えられるようにするため
@@ -938,7 +957,7 @@ function showDiagnosis() {
 function fromDiagnosis(which) {
   if (lastDiagnosis) {
     post(Object.assign({}, lastDiagnosis.payload,
-      { next_choice: which === 'invoice' ? '登録して無料' : '割引のみ' }));
+      { next_choice: which === 'invoice' ? '登録してキャッシュバック' : '割引のみ' }));
   }
   go(which === 'invoice' ? 'sUnreg' : 'sDiscount');
 }
