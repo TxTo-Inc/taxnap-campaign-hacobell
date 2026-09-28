@@ -63,7 +63,7 @@ if "form_id" not in state:
         "【入力内容の使いみち】\n"
         "・インボイス登録番号：ハコベルの支払明細への記載／国税庁の公表サイトで有効な番号かの確認\n"
         "・氏名：国税庁に登録された名義との照合\n"
-        "・ドライバーID：ハコベルのご利用状況（支払条件）の確認\n"
+        "・電話番号（ハコベルに登録しているもの）：ハコベルのご利用状況（支払条件）の確認\n"
         "・タックスナップの登録メールアドレス：タックスナップのご利用状況の確認（ハコベルには提供しません）\n\n"
         "運営：株式会社タックスナップ\n"
         "プライバシーポリシー：https://taxnap.com/privacy_policy"
@@ -94,8 +94,8 @@ if "form_id" not in state:
             "description": "インボイス登録と同じ名義でご入力ください（旧姓・通称で登録した方はその名義）",
             "questionItem": {"question": {"required": True, "textQuestion": {"paragraph": False}}}}}},
         {"createItem": {"location": {"index": 5}, "item": {
-            "title": "ハコベルのドライバーID",
-            "description": "ハコベルのアプリの ？？？ で確認できます",
+            "title": "ハコベルに登録している電話番号",
+            "description": "ハコベルのアプリに登録している電話番号をご入力ください（例：090-1234-5678。ハイフンなしでもOK）",
             "questionItem": {"question": {"required": True, "textQuestion": {"paragraph": False}}}}}},
         {"createItem": {"location": {"index": 6}, "item": {
             "title": "タックスナップに登録しているメールアドレス",
@@ -103,7 +103,7 @@ if "form_id" not in state:
             "questionItem": {"question": {"required": True, "textQuestion": {"paragraph": False}}}}}},
         {"createItem": {"location": {"index": 7}, "item": {
             "title": "個人情報の提供への同意",
-            "description": ("入力したインボイス登録番号・氏名・ドライバーID、およびタックスナップの契約状況（契約プラン・支払額）を、"
+            "description": ("入力したインボイス登録番号・氏名・電話番号、およびタックスナップの契約状況（契約プラン・支払額）を、"
                             "キャンペーンの対象確認・支払い、および支払明細への登録番号の記載のために、"
                             "株式会社タックスナップからハコベル株式会社へ提供します。"
                             "同意はいつでも撤回でき、撤回後は提供を停止します。"),

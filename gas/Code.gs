@@ -6,7 +6,7 @@
  * 役割
  *  1. 訴求アンケート（index.html）からの POST を受けてシートに1行追記する
  *     - kind=unregistered … 選択肢1のＣ（未登録）。登録手順メールを自動送信
- *     - kind=discount     … 選択肢2（割引のみ）。1人1コードのクーポンを割り当ててメール送信
+ *     - kind=discount     … 選択肢2（青色申告だけ・登録なし）。1人1コードのクーポンを割り当ててメール送信
  *     - kind=diagnosis    … 選択肢3の診断結果（個人情報なし）
  *  2. インボイス申請アンケート（Googleフォーム）の送信時に、クーポンを割り当ててメール送信
  *  3. 毎朝、未登録者にリマインドメールを送る（14日後・30日後・締切7日前）。
@@ -42,7 +42,7 @@ var SHEETS = {
       { key: 'received_at',   label: '受信時刻(JST)' },
       { key: 'name',          label: '氏名' },
       { key: 'email',         label: 'メールアドレス' },
-      { key: 'driver_id',     label: 'ドライバーID' },
+      { key: 'phone',         label: '電話番号(ハコベル登録)' },
       { key: 'consent',       label: '同意' },
       { key: 'company_id',    label: '配布元コード' },
       { key: 'mail_guide',    label: '手順メール送信' },
@@ -54,12 +54,12 @@ var SHEETS = {
     ]
   },
   discount: {
-    name: '割引のみ',
+    name: '青色申告のみ',
     cols: [
       { key: 'received_at',   label: '受信時刻(JST)' },
       { key: 'name',          label: '氏名' },
       { key: 'email',         label: 'メールアドレス' },
-      { key: 'driver_id',     label: 'ドライバーID' },
+      { key: 'phone',         label: '電話番号(ハコベル登録)' },
       { key: 'reasons',       label: '登録しない理由(複数)' },
       { key: 'reason_free',   label: '理由(自由記述)' },
       { key: 'consent',       label: '同意' },
@@ -75,8 +75,8 @@ var SHEETS = {
       { key: 'method',        label: '申告方法' },
       { key: 'uriage',        label: '売上(円)' },
       { key: 'keihi',         label: '経費(円)' },
-      { key: 'tedori_now',    label: '手取り(いま/2027年分)' },
-      { key: 'tedori_blue',   label: '手取り(青色・登録なし)' },
+      { key: 'tedori_now',    label: '手取り(白色/2027年分)' },
+      { key: 'tedori_blue',   label: '手取り(青色・登録なし/画面には出さない)' },
       { key: 'tedori_invoice',label: '手取り(青色・登録あり)' },
       { key: 'ctax',          label: '消費税(3割特例)' },
       { key: 'next_choice',   label: '診断後に選んだ案内' },
@@ -91,7 +91,7 @@ var SHEETS = {
       { key: 'status',        label: '登録状況' },
       { key: 'invoice_no',    label: 'インボイス登録番号' },
       { key: 'name',          label: '氏名' },
-      { key: 'driver_id',     label: 'ドライバーID' },
+      { key: 'phone',         label: '電話番号(ハコベル登録)' },
       { key: 'email',         label: 'タックスナップ登録メール' },
       { key: 'consent',       label: '同意' },
       { key: 'coupon',        label: '配布クーポン' },
@@ -126,7 +126,7 @@ var FORM_TITLES = {
   'インボイス登録の状況を教えてください': 'status',
   'インボイス登録番号（T＋13桁）': 'invoice_no',
   '氏名（フルネーム）': 'name',
-  'ハコベルのドライバーID': 'driver_id',
+  'ハコベルに登録している電話番号': 'phone',
   'タックスナップに登録しているメールアドレス': 'email',
   '個人情報の提供への同意': 'consent'
 };
@@ -184,8 +184,9 @@ function doPost(e) {
     if (kind === 'unregistered') {
       data.mail_guide = sendGuideMail_(data) ? nowJst_() : '送信失敗';
     }
+    if (data.phone) data.phone = normalizePhone_(data.phone);
     if (kind === 'discount') {
-      data.coupon = issueCoupon_(data.email, '割引のみ', data.name);
+      data.coupon = issueCoupon_(data.email, '青色申告のみ', data.name);
     }
     appendRow_(kind, data);
     return jsonOut_({ ok: true });
@@ -222,6 +223,7 @@ function onApplyFormSubmit(e) {
       data[key] = Array.isArray(v) ? v.join(', ') : String(v).trim();
     });
     if (data.invoice_no) data.invoice_no = normalizeInvoiceNo_(data.invoice_no);
+    if (data.phone) data.phone = normalizePhone_(data.phone);
     data.coupon = data.email ? issueCoupon_(data.email, '申請フォーム', data.name) : '';
     appendRow_('applied', data);
     markApplied_(data.email);
@@ -236,6 +238,15 @@ function normalizeInvoiceNo_(s) {
     return String.fromCharCode(c.charCodeAt(0) - 0xFEE0);
   }).replace(/[\s-]/g, '').toUpperCase();
   if (/^\d{13}$/.test(s)) s = 'T' + s;
+  return s;
+}
+
+/** 電話番号を数字だけにそろえる（ハコベルとの照合用。+81 は 0 に戻す） */
+function normalizePhone_(s) {
+  s = String(s).replace(/[０-９]/g, function (c) {
+    return String.fromCharCode(c.charCodeAt(0) - 0xFEE0);
+  }).replace(/[^\d+]/g, '');
+  if (/^\+81/.test(s)) s = '0' + s.slice(3);
   return s;
 }
 
@@ -290,7 +301,7 @@ function sendPendingCoupons() {
     var vals = sh.getRange(2, 1, last - 1, cols.length).getValues();
     vals.forEach(function (r, idx) {
       if (String(r[ci]).indexOf('在庫切れ') === 0) {
-        var code = issueCoupon_(r[ei], kind === 'discount' ? '割引のみ' : '申請フォーム', r[ni]);
+        var code = issueCoupon_(r[ei], kind === 'discount' ? '青色申告のみ' : '申請フォーム', r[ni]);
         sh.getRange(idx + 2, ci + 1).setValue(code);
       }
     });
@@ -492,10 +503,13 @@ function getSheet_(kind) {
   return sh;
 }
 
-/** 先頭が = + - @ の入力は数式として実行されないよう ' を付ける */
+/**
+ * 先頭が = + - @ の入力は数式として実行されないよう ' を付ける。
+ * 0 始まりの数字（電話番号など）も、数値に変換されて先頭の0が消えないよう ' を付ける
+ */
 function safe_(v) {
   v = String(v);
-  return /^[=+\-@]/.test(v) ? "'" + v : v;
+  return /^[=+\-@]/.test(v) || /^0\d+$/.test(v) ? "'" + v : v;
 }
 
 function appendRow_(kind, data) {

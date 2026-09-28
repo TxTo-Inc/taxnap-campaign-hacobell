@@ -228,14 +228,14 @@ textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92r
     </div>
 
     <div class="card">
-      <div class="card-title">📈 白色申告から青色申告に切り替えると、手取りが約16〜18万円アップ</div>
+      <div class="card-title">📈 白色申告から「青色申告＋インボイス登録」にすると、消費税を納めても手取りが約8〜10万円アップ</div>
       <table class="bd tedori-table">
-        <tr class="th"><td>売上</td><td>白色申告</td><td>青色申告</td><td>増える額</td></tr>
-        <tr><td>300万円</td><td>約125.9万円</td><td>約142.3万円</td><td class="up">約16.4万円</td></tr>
-        <tr><td>400万円</td><td>約171.4万円</td><td>約189.5万円</td><td class="up">約18.1万円</td></tr>
-        <tr><td>500万円</td><td>約216.4万円</td><td>約234.5万円</td><td class="up">約18.1万円</td></tr>
+        <tr class="th"><td>売上</td><td>白色申告</td><td>青色＋インボイス</td><td>増える額</td></tr>
+        <tr><td>300万円</td><td>約125.9万円</td><td>約135.7万円</td><td class="up">約9.8万円</td></tr>
+        <tr><td>400万円</td><td>約171.4万円</td><td>約181.3万円</td><td class="up">約9.9万円</td></tr>
+        <tr><td>500万円</td><td>約216.4万円</td><td>約224.7万円</td><td class="up">約8.3万円</td></tr>
       </table>
-      <div class="card-note">※ 手取りが増えるのは青色申告に切り替えた効果で、インボイス登録の有無には関係ありません<br>※ 2027年分、経費率40%、国民健康保険（東京23区・40歳未満）＋国民年金、基礎控除は令和8・9年分の特例額で試算。青色は控除75万円（複式簿記・e-Tax・優良な電子帳簿の要件あり）。0.1万円単位に四捨五入。実際の金額は人によって異なります</div>
+      <div class="card-note">※ 「青色＋インボイス」は、インボイス登録で納める消費税（3割特例）を差し引いた後の手取りです。アプリ利用料・キャッシュバックは含みません<br>※ 2027年分、経費率40%、国民健康保険（東京23区・40歳未満）＋国民年金、基礎控除は令和8・9年分の特例額で試算。青色は控除75万円（複式簿記・e-Tax・優良な電子帳簿の要件あり）。0.1万円単位に四捨五入。実際の金額は人によって異なります<br>※ すでに青色申告をしている方は、インボイス登録で手取りが増えることはありません</div>
     </div>
 
     <div class="intro-note">
@@ -298,12 +298,13 @@ textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92r
       <div class="error-msg" id="uEmailError">メールアドレスの形式をご確認ください</div>
     </div>
     <div class="field">
-      <label class="field-label" for="uDriver">ハコベルのドライバーID<span class="req">必須</span></label>
-      <input class="text-input" id="uDriver" autocomplete="off" placeholder="例 123456">
-      <div class="field-help">ハコベルのアプリの <span data-cfg="driverIdWhere"></span> で確認できます</div>
+      <label class="field-label" for="uPhone">ハコベルに登録している電話番号<span class="req">必須</span></label>
+      <input class="text-input" id="uPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="例 090-1234-5678">
+      <div class="field-help">ハコベルのアプリに登録している電話番号をご入力ください（ハイフンなしでもOK）</div>
+      <div class="error-msg" id="uPhoneError">電話番号の形式をご確認ください（例 090-1234-5678）</div>
     </div>
 
-    <div class="consent-box">入力内容は、株式会社タックスナップが、インボイス登録手順のご案内・リマインドメールの送信、およびキャンペーン対象者の確認に利用します。対象者の確認のため、ドライバーIDをハコベル株式会社に照会することがあります。</div>
+    <div class="consent-box">入力内容は、株式会社タックスナップが、インボイス登録手順のご案内・リマインドメールの送信、およびキャンペーン対象者の確認に利用します。対象者の確認のため、電話番号をハコベル株式会社に照会することがあります。</div>
     <label class="consent-check"><input type="checkbox" id="uConsent"><span><a href="https://taxnap.com/privacy_policy" target="_blank" rel="noopener">プライバシーポリシー</a>と上記の利用目的に同意し、案内メールを受け取ります</span></label>
 
     <button class="btn-next" id="uSubmit" disabled onclick="submitUnreg()">登録手順を受け取る</button>
@@ -334,7 +335,7 @@ textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92r
   <div class="slide" id="sDiscount">
     <div class="q-number">STEP 2</div>
     <div class="q-title">ハコベル特別価格のクーポンをお送りします</div>
-    <div class="q-subtitle">インボイス登録をしなくても、タックスナップの安心プランを1年目19,800円（税抜・通常29,800円）でご利用いただけます。<b>キャッシュバックの対象外</b>です</div>
+    <div class="q-subtitle">インボイス登録はせず青色申告だけしたい方も、タックスナップの安心プランを1年目19,800円（税抜・通常29,800円）でご利用いただけます。<b>キャッシュバックの対象外</b>です</div>
 
     <div class="field">
       <label class="field-label" for="dName">氏名<span class="req">必須</span></label>
@@ -347,9 +348,10 @@ textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92r
       <div class="error-msg" id="dEmailError">メールアドレスの形式をご確認ください</div>
     </div>
     <div class="field">
-      <label class="field-label" for="dDriver">ハコベルのドライバーID<span class="req">必須</span></label>
-      <input class="text-input" id="dDriver" autocomplete="off" placeholder="例 123456">
-      <div class="field-help">ハコベルのアプリの <span data-cfg="driverIdWhere"></span> で確認できます</div>
+      <label class="field-label" for="dPhone">ハコベルに登録している電話番号<span class="req">必須</span></label>
+      <input class="text-input" id="dPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="例 090-1234-5678">
+      <div class="field-help">ハコベルのアプリに登録している電話番号をご入力ください（ハイフンなしでもOK）</div>
+      <div class="error-msg" id="dPhoneError">電話番号の形式をご確認ください（例 090-1234-5678）</div>
     </div>
     <div class="field">
       <span class="field-label">インボイス登録をしない理由<span class="opt">任意・複数選択可</span></span>
@@ -359,7 +361,7 @@ textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92r
       </div>
     </div>
 
-    <div class="consent-box">入力内容は、株式会社タックスナップが、クーポンの送付およびキャンペーン対象者の確認に利用します。対象者の確認のため、ドライバーIDをハコベル株式会社に照会することがあります。登録しない理由は集計してキャンペーンの改善に使い、個人が分かる形でハコベル株式会社に提供することはありません。</div>
+    <div class="consent-box">入力内容は、株式会社タックスナップが、クーポンの送付およびキャンペーン対象者の確認に利用します。対象者の確認のため、電話番号をハコベル株式会社に照会することがあります。登録しない理由は集計してキャンペーンの改善に使い、個人が分かる形でハコベル株式会社に提供することはありません。</div>
     <label class="consent-check"><input type="checkbox" id="dConsent"><span><a href="https://taxnap.com/privacy_policy" target="_blank" rel="noopener">プライバシーポリシー</a>と上記の利用目的に同意します</span></label>
 
     <button class="btn-next" id="dSubmit" disabled onclick="submitDiscount()">クーポンを受け取る</button>
@@ -388,7 +390,21 @@ textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92r
     <div class="q-title">いまの確定申告の方法は？</div>
     <div class="q-subtitle">最も近いもの1つ</div>
     <div class="options" id="optsMethod"></div>
-    <button class="btn-next" id="nextD1" disabled onclick="go('sD2')">次へ →</button>
+    <button class="btn-next" id="nextD1" disabled onclick="nextFromMethod()">次へ →</button>
+    <button class="btn-back" onclick="goBack()">← 戻る</button>
+  </div>
+
+  <!-- ===== 診断：すでに青色申告の方（診断しない） ===== -->
+  <div class="slide" id="sBlueAlready">
+    <div class="card">
+      <div class="card-title">📘 この診断は、白色申告の方向けです</div>
+      <div class="card-body">すでに青色申告をしている方は、インボイス登録で手取りが増えることはありません（登録すると消費税の納税が発生します）。<br>インボイス登録をするかどうかは、お取引先の状況も含めてご判断ください。</div>
+    </div>
+    <div class="card">
+      <div class="card-title">👉 ご希望の方を選んでください</div>
+      <button class="btn-next" style="margin-top:4px" onclick="fromBlueAlready('invoice')">インボイス登録して、キャッシュバックを受けたい</button>
+      <button class="btn-sub" onclick="fromBlueAlready('discount')">インボイス登録はせず、青色申告だけしたい</button>
+    </div>
     <button class="btn-back" onclick="goBack()">← 戻る</button>
   </div>
 
@@ -438,14 +454,14 @@ textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92r
     </div>
 
     <div class="card">
-      <div class="card-title">📋 「青色申告＋インボイス登録」の内訳（いまと比べて）</div>
+      <div class="card-title">📋 「青色申告＋インボイス登録」の内訳（白色申告と比べて）</div>
       <table class="bd" id="resBd"></table>
     </div>
 
     <div class="card">
       <div class="card-title">👉 ご希望の方を選んでください</div>
       <button class="btn-next" style="margin-top:4px" onclick="fromDiagnosis('invoice')">インボイス登録して、キャッシュバックを受けたい</button>
-      <button class="btn-sub" onclick="fromDiagnosis('discount')">インボイス登録はせず、初年度割引だけ受けたい</button>
+      <button class="btn-sub" onclick="fromDiagnosis('discount')">インボイス登録はせず、青色申告だけしたい</button>
     </div>
 
     <div class="disclaimer" id="resDisclaimer"></div>
@@ -469,8 +485,7 @@ const CAMPAIGN = {
   payMethod:     '？？？',   // キャッシュバックの支払方法（例：2028年1月の報酬と一緒に振込）
   typeA:         '？？？',   // すでにハコベルに番号を登録済みの方（A）もキャッシュバック対象か
   deadline:      '？？？',   // キャンペーンの申請締切（対象とする登録申請の期限・番号の共有期限）
-  contact:       '？？？',   // 問い合わせ窓口（例：タックスナップ公式LINE）
-  driverIdWhere: '？？？'    // ハコベルのアプリでドライバーIDが見られる場所
+  contact:       '？？？'    // 問い合わせ窓口（例：タックスナップ公式LINE）
 };
 
 // キャッシュバックの条件（9/15 石髙さまメール・9/28 提案資料で合意済みの内容）
@@ -603,8 +618,8 @@ const KOJO_AFTER = 750000;   // タックスナップで複式簿記＋e-Tax＋�
    ============================================================ */
 const CHOICES = [
   {emoji:'💴', text:'1年目の利用料のキャッシュバックを受けたい', sub:'インボイス登録＋タックスナップのご利用（条件あり）', to:'sStatus'},
-  {emoji:'🎟️', text:'初年度割引だけ受けたい', sub:'インボイス登録はしない。1年目19,800円で利用（キャッシュバック対象外）', to:'sDiscount'},
-  {emoji:'🔍', text:'お得になるか確かめたい', sub:'インボイス未登録の方向け。売上・経費・いまの申告方法から約1分で診断', to:'sD1'}
+  {emoji:'📘', text:'青色申告だけしたい', sub:'インボイス登録はしない。1年目19,800円で利用（キャッシュバック対象外）', to:'sDiscount'},
+  {emoji:'🔍', text:'手取りがいくら増えるか確かめたい', sub:'白色申告の方向け。売上・経費から約1分で診断', to:'sD1'}
 ];
 const STATUSES = [
   {emoji:'✅', key:'A', text:'インボイス登録済みで、ハコベルにも番号を登録済み',
@@ -715,20 +730,32 @@ function buildMulti(containerId, opts) {
   });
 }
 
-/* ===== 入力フォーム（氏名・メール・ドライバーID・同意） ===== */
+/* ===== 入力フォーム（氏名・メール・電話番号・同意） ===== */
 function val(id) { return document.getElementById(id).value.trim(); }
 function emailOk(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+// 電話番号は数字だけにそろえて保存する（全角・ハイフン・空白・+81 を吸収）
+function normPhone(v) {
+  let s = v.replace(/[０-９]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0))
+           .replace(/[\s\-‐－―ー()（）]/g, '');
+  if (/^\+81/.test(s)) s = '0' + s.slice(3);
+  return s;
+}
+function phoneOk(v) { return /^0\d{9,10}$/.test(normPhone(v)); }
 
 function bindForm(prefix, submitId) {
-  const ids = ['Name', 'Email', 'Driver'].map(s => prefix + s);
+  const ids = ['Name', 'Email', 'Phone'].map(s => prefix + s);
+  const flag = (field, bad) => {
+    document.getElementById(prefix + field).classList.toggle('input-error', bad);
+    document.getElementById(prefix + field + 'Error').classList.toggle('show', bad);
+  };
   const refresh = () => {
     const email = val(prefix + 'Email');
-    const ok = val(prefix + 'Name') && emailOk(email) && val(prefix + 'Driver')
+    const phone = val(prefix + 'Phone');
+    const ok = val(prefix + 'Name') && emailOk(email) && phoneOk(phone)
                && document.getElementById(prefix + 'Consent').checked;
     document.getElementById(submitId).disabled = !ok;
-    const bad = email !== '' && !emailOk(email);
-    document.getElementById(prefix + 'Email').classList.toggle('input-error', bad);
-    document.getElementById(prefix + 'EmailError').classList.toggle('show', bad);
+    flag('Email', email !== '' && !emailOk(email));
+    flag('Phone', phone !== '' && !phoneOk(phone));
   };
   ids.forEach(id => document.getElementById(id).addEventListener('input', refresh));
   document.getElementById(prefix + 'Consent').addEventListener('change', refresh);
@@ -739,7 +766,7 @@ function bindForm(prefix, submitId) {
    ============================================================ */
 // 進捗バーは「その経路で何画面目か」で出す（経路ごとに画面数が違うため割合で表示）
 const PATH_LEN = { sStatus:4, sApply:4, sUnreg:4, sUnregDone:4, sDiscount:3, sDiscountDone:3,
-                   sD1:6, sD2:6, sD3:6, sResult:6 };
+                   sD1:6, sBlueAlready:4, sD2:6, sD3:6, sResult:6 };
 
 function showSlide(id) {
   document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
@@ -765,7 +792,7 @@ function nextFromStatus() {
   document.getElementById('applyLink').href = url;
   document.getElementById('applyNeeds').innerHTML = (s.key === 'B'
     ? '・インボイス登録番号（T＋13桁）<br>' : '') +
-    '・ハコベルのドライバーID<br>・タックスナップに登録しているメールアドレス<br>' +
+    '・ハコベルに登録している電話番号<br>・タックスナップに登録しているメールアドレス<br>' +
     '<span class="card-note">まだタックスナップに登録していない方は、これから登録に使うメールアドレスでOKです</span>' +
     (s.key === 'A' ? '<span class="card-note">※ すでにハコベルに番号を登録済みの方のキャッシュバックの扱い：' + cfgHtml('typeA') + '</span>' : '');
   go('sApply');
@@ -801,7 +828,7 @@ function submitUnreg() {
   document.getElementById('uSubmit').disabled = true;
   withLoading(post({
     _kind: 'unregistered',
-    name: val('uName'), email: val('uEmail'), driver_id: val('uDriver'),
+    name: val('uName'), email: val('uEmail'), phone: normPhone(val('uPhone')),
     consent: '同意'
   }), 'sUnregDone');
 }
@@ -810,7 +837,7 @@ function submitDiscount() {
   document.getElementById('dSubmit').disabled = true;
   withLoading(post({
     _kind: 'discount',
-    name: val('dName'), email: val('dEmail'), driver_id: val('dDriver'),
+    name: val('dName'), email: val('dEmail'), phone: normPhone(val('dPhone')),
     reasons: answers.reasons.join(', '), reason_free: val('reasonOther'),
     consent: '同意'
   }), 'sDiscountDone');
@@ -873,59 +900,65 @@ function onMoneyInput(id) {
 /* ============================================================
    診断
    ------------------------------------------------------------
-   3つの選び方を 2027年分どうしで比べる（年齢39歳以下・国民健康保険の前提）
-     いまのまま       … いまの申告方法の控除で、インボイス登録なし
-     青色＋割引のみ   … 青色75万、登録なし、アプリ利用料 21,780円（キャッシュバック対象外）
+   白色申告の方向けに、2027年分どうしで2つを比べる（年齢39歳以下・国民健康保険の前提）
+     いまのまま       … 白色申告（控除なし）、インボイス登録なし
      青色＋登録       … 青色75万、登録あり（消費税を納付）、アプリ利用料 21,780円から
                         条件達成で19,800円がキャッシュバック（実質 1,980円）
-   青色への切り替えはインボイス登録とは関係なく受けられるため、
-   「登録したから増えた」と読めないよう内訳で分けて見せる
+   すでに青色申告の方は、登録で手取りが減るため診断せず sBlueAlready へ回す。
+   「登録したから増えた」と読めないよう、内訳では青色の効果と消費税を分けて見せる
    ============================================================ */
 function yen(n) { return n.toLocaleString(); }
 function signed(n) { return (n >= 0 ? '＋' : '−') + yen(Math.abs(n)) + '円'; }
 
+function isBlueNow() { return (METHOD_KOJO[answers.method] || 0) > 0; }
+
+function nextFromMethod() { go(isBlueNow() ? 'sBlueAlready' : 'sD2'); }
+
+function fromBlueAlready(which) {
+  post({ _kind: 'diagnosis', method: answers.method,
+         next_choice: which === 'invoice' ? '登録してキャッシュバック（青色のため診断なし）' : '青色申告のみ（青色のため診断なし）' });
+  go(which === 'invoice' ? 'sUnreg' : 'sDiscount');
+}
+
 function showDiagnosis() {
   const uriage = Math.round(parseMoney('uriage') * 10000);
   const keihi  = Math.round(parseMoney('keihi') * 10000);
-  const kojoNow = METHOD_KOJO[answers.method] || 0;
 
-  const now     = tedori(uriage, keihi, kojoNow, 2027, false, false).tedori;
+  const now     = tedori(uriage, keihi, 0, 2027, false, false).tedori;
   const blueRaw = tedori(uriage, keihi, KOJO_AFTER, 2027, false, false).tedori;
   const ctax    = shohizei(uriage);
   const invRaw  = tedori(uriage, keihi + ctax, KOJO_AFTER, 2027, false, false).tedori;
 
-  const blue    = blueRaw - APP_PRICE_DISCOUNTED;              // 割引のみ：アプリ代を払う
   const invoice = invRaw - (APP_PRICE_DISCOUNTED - CASHBACK);  // 登録：条件達成でキャッシュバック
   const invCost = blueRaw - invRaw;                 // 登録による手取りの減少（消費税 − 税金・保険料の減少分）
   const blueGain = blueRaw - now;                   // 青色に切り替えた効果
+  const gain = invoice - now;
 
-  lastDiagnosis = { uriage, keihi, now, blue, invoice, ctax };
+  lastDiagnosis = { uriage, keihi, now, invoice, ctax };
 
   const rows = [
-    { name:'いまのまま', sub: answers.method === 'わからない' ? '白色申告として試算' : answers.method, v: now },
-    { name:'青色申告＋割引のみ', sub:'インボイス登録なし／アプリ利用料 21,780円（税込）', v: blue },
+    { name:'いまのまま', sub: answers.method === 'わからない' ? '白色申告として試算' : '白色申告', v: now },
     { name:'青色申告＋インボイス登録', sub:'消費税を納付／アプリ利用料 21,780円から19,800円をキャッシュバック（条件を満たした場合）', v: invoice }
   ];
-  const best = Math.max(blue, invoice);
   document.getElementById('resCmp').innerHTML = rows.map((r, i) => {
     const d = r.v - now;
-    const isBest = i > 0 && r.v === best;
+    const isBest = i > 0 && d > 0;
     return `<div class="cmp-row${isBest ? ' best' : ''}">
       <div class="cmp-head">
-        <div class="cmp-name">${isBest ? '<span class="cmp-badge">手取りが多い</span>' : ''}${r.name}<small>${r.sub}</small></div>
+        <div class="cmp-name">${isBest ? '<span class="cmp-badge">おすすめ</span>' : ''}${r.name}<small>${r.sub}</small></div>
         <div class="cmp-val">${yen(r.v)}円</div>
       </div>
       ${i > 0 ? `<div class="cmp-diff ${d >= 0 ? 'plus' : 'minus'}">いまより ${signed(d)}</div>` : ''}
     </div>`;
   }).join('');
 
-  const diffInvVsBlue = invoice - blue;
-  document.getElementById('resLead').innerHTML = diffInvVsBlue >= 0
-    ? `売上${yen(uriage / 10000)}万円・経費${yen(keihi / 10000)}万円の場合、<br><b>インボイス登録してキャッシュバックを受けた方が</b>、手取りが<b>年${yen(diffInvVsBlue)}円</b>多くなります`
-    : `売上${yen(uriage / 10000)}万円・経費${yen(keihi / 10000)}万円の場合、<br>手取りだけで比べると、<b>インボイス登録をしない方が年${yen(-diffInvVsBlue)}円</b>多くなります`;
+  const cond = `売上${yen(uriage / 10000)}万円・経費${yen(keihi / 10000)}万円の場合、<br>`;
+  document.getElementById('resLead').innerHTML = gain > 0
+    ? cond + `<b>青色申告＋インボイス登録</b>にすると、消費税を納めても手取りが<b>年${yen(gain)}円</b>増えます`
+    : cond + `青色申告＋インボイス登録にすると、手取りは<b>年${yen(-gain)}円</b>減ります`;
 
   document.getElementById('resBd').innerHTML = `
-    <tr class="${blueGain >= 0 ? 'plus' : 'minus'}"><td>青色申告（75万円控除）に切り替える効果<small>インボイス登録の有無に関係なく受けられます</small></td><td>${signed(blueGain)}</td></tr>
+    <tr class="${blueGain >= 0 ? 'plus' : 'minus'}"><td>青色申告（75万円控除）に切り替える効果</td><td>${signed(blueGain)}</td></tr>
     <tr class="minus"><td>インボイス登録で納める消費税<small>3割特例を使った場合（2027年分）</small></td><td>−${yen(ctax)}円</td></tr>
     <tr class="plus"><td>消費税を経費にできることで減る税金・保険料</td><td>＋${yen(ctax - invCost)}円</td></tr>
     <tr class="minus"><td>アプリ利用料（1年目）<small>ハコベル特別価格 19,800円（税込21,780円）</small></td><td>−${yen(APP_PRICE_DISCOUNTED)}円</td></tr>
@@ -937,6 +970,7 @@ function showDiagnosis() {
 
   document.getElementById('resDisclaimer').innerHTML = `<b>試算の前提</b><br>
     ・2027年分の税制で計算しています（基礎控除は令和8・9年分の特例額）<br>
+    ・いまのままは白色申告（青色申告特別控除なし）として計算しています<br>
     ・消費税は3割特例（2027・2028年分、基準期間の課税売上1,000万円以下の個人）で計算し、納める消費税は経費に入れています。2029年分以降は計算方法が変わり、負担が増えます<br>
     ・39歳以下・国民健康保険（東京23区の料率）・単身で計算しています。扶養・各種控除は含みません<br>
     ・青色申告特別控除75万円は、複式簿記＋e-Tax＋優良な電子帳簿の保存が要件です<br>
@@ -945,10 +979,12 @@ function showDiagnosis() {
     ・本試算は概算です。実際の税額は個別の状況により異なります。正式な判断は税理士にご相談ください`;
 
   // 診断ログは「結果を見た時点」で1行、「案内を選んだ時点」でもう1行（next_choice 入り）送る。
-  // 結果だけ見て離脱した人も数えられるようにするため
+  // 結果だけ見て離脱した人も数えられるようにするため。
+  // tedori_blue（青色・登録なし）は画面には出さないが、比較用にログへ残す
   lastDiagnosis.payload = {
     _kind: 'diagnosis', method: answers.method, uriage: String(uriage), keihi: String(keihi),
-    tedori_now: String(now), tedori_blue: String(blue), tedori_invoice: String(invoice), ctax: String(ctax)
+    tedori_now: String(now), tedori_blue: String(blueRaw - APP_PRICE_DISCOUNTED),
+    tedori_invoice: String(invoice), ctax: String(ctax)
   };
   post(Object.assign({}, lastDiagnosis.payload));
   go('sResult');
@@ -957,7 +993,7 @@ function showDiagnosis() {
 function fromDiagnosis(which) {
   if (lastDiagnosis) {
     post(Object.assign({}, lastDiagnosis.payload,
-      { next_choice: which === 'invoice' ? '登録してキャッシュバック' : '割引のみ' }));
+      { next_choice: which === 'invoice' ? '登録してキャッシュバック' : '青色申告のみ' }));
   }
   go(which === 'invoice' ? 'sUnreg' : 'sDiscount');
 }

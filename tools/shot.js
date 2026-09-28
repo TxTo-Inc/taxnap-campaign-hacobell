@@ -6,6 +6,7 @@ const { chromium } = require('playwright');
   const p = await b.newPage({ viewport: { width: 375, height: 812 }, deviceScaleFactor: 2 });
   const errors = [];
   p.on('pageerror', e => errors.push(String(e)));
+  p.on('console', m => { if (m.type() === 'warning') console.log('送信:', m.text().slice(0, 200)); });
   const url = 'file://' + process.cwd() + '/index.html';
   const shot = async name => { await p.waitForTimeout(450); await p.screenshot({ path: `shots/${name}.png`, fullPage: true }); };
   const pick = async (container, text) => p.click(`#${container} .opt-btn:has-text("${text}")`);
@@ -23,14 +24,14 @@ const { chromium } = require('playwright');
 
   // Ｃ → 入力 → 完了
   await p.click('.slide.active .btn-back'); await pick('optsStatus', 'まだインボイス登録'); await next();
-  await p.fill('#uName', '山田 太郎'); await p.fill('#uEmail', 'bad'); await p.fill('#uDriver', '12345');
+  await p.fill('#uName', '山田 太郎'); await p.fill('#uEmail', 'bad'); await p.fill('#uPhone', '090-1234');
   await shot('05_unreg_error');
-  await p.fill('#uEmail', 'test@example.com'); await p.check('#uConsent'); await shot('06_unreg_filled');
+  await p.fill('#uEmail', 'test@example.com'); await p.fill('#uPhone', '０９０－１２３４－５６７８'); await p.check('#uConsent'); await shot('06_unreg_filled');
   await next(); await p.waitForTimeout(300); await shot('07_unreg_done');
 
-  // 選択肢2 → 割引のみ
-  await p.goto(url); await next(); await pick('optsChoice', '初年度割引だけ'); await next();
-  await p.fill('#dName', '山田 花子'); await p.fill('#dEmail', 'hanako@example.com'); await p.fill('#dDriver', '999');
+  // 選択肢2 → 青色申告だけ
+  await p.goto(url); await next(); await pick('optsChoice', '青色申告だけしたい'); await next();
+  await p.fill('#dName', '山田 花子'); await p.fill('#dEmail', 'hanako@example.com'); await p.fill('#dPhone', '08011112222');
   await pick('optsReason', '消費税'); await pick('optsReason', 'その他'); await p.fill('#reasonOther', 'テスト');
   await p.check('#dConsent'); await shot('08_discount'); await next(); await p.waitForTimeout(300); await shot('09_discount_done');
 
@@ -41,8 +42,13 @@ const { chromium } = require('playwright');
   await p.click('#keihiChips .chip:has-text("40%")'); await shot('12_diag_keihi'); await next();
   await shot('13_result_500');
   console.log('結果:', (await p.textContent('#resLead')).trim());
-  // 診断 → 割引のみへ
+  // 診断 → 青色申告だけへ
   await p.click('#sResult .btn-sub'); await shot('14_result_to_discount');
+
+  // 診断 → すでに青色（e-Tax）→ 診断しない案内
+  await p.goto(url); await next(); await pick('optsChoice', '確かめたい'); await next();
+  await pick('optsMethod', 'e-Tax'); await next(); await shot('15_diag_blue_already');
+  await p.click('#sBlueAlready .btn-next'); await shot('16_blue_to_unreg');
 
   console.log('JSエラー:', errors.length ? errors : 'なし');
   await b.close();
