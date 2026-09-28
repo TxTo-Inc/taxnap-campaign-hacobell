@@ -41,7 +41,7 @@ var SHEETS = {
     cols: [
       { key: 'received_at',   label: '受信時刻(JST)' },
       { key: 'name',          label: '氏名' },
-      { key: 'email',         label: 'メールアドレス' },
+      { key: 'email',         label: 'メール(ハコベル登録)' },
       { key: 'phone',         label: '電話番号(ハコベル登録)' },
       { key: 'consent',       label: '同意' },
       { key: 'company_id',    label: '配布元コード' },
@@ -58,8 +58,9 @@ var SHEETS = {
     cols: [
       { key: 'received_at',   label: '受信時刻(JST)' },
       { key: 'name',          label: '氏名' },
-      { key: 'email',         label: 'メールアドレス' },
+      { key: 'email',         label: 'メール(ハコベル登録)' },
       { key: 'phone',         label: '電話番号(ハコベル登録)' },
+      { key: 'new_user',      label: '有料契約歴(本人申告)' },
       { key: 'reasons',       label: '登録しない理由(複数)' },
       { key: 'reason_free',   label: '理由(自由記述)' },
       { key: 'consent',       label: '同意' },
@@ -92,7 +93,9 @@ var SHEETS = {
       { key: 'invoice_no',    label: 'インボイス登録番号' },
       { key: 'name',          label: '氏名' },
       { key: 'phone',         label: '電話番号(ハコベル登録)' },
-      { key: 'email',         label: 'タックスナップ登録メール' },
+      { key: 'email',         label: 'メール(ハコベル登録)' },
+      { key: 'paid_before',   label: '有料契約歴(本人申告)' },
+      { key: 'taxnap_email',  label: 'タックスナップ登録メール(ハコベルと違う場合)' },
       { key: 'consent',       label: '同意' },
       { key: 'coupon',        label: '配布クーポン' },
       { key: 'check_paid',    label: '有料契約の確認(手作業)' },
@@ -127,7 +130,9 @@ var FORM_TITLES = {
   'インボイス登録番号（T＋13桁）': 'invoice_no',
   '氏名（フルネーム）': 'name',
   'ハコベルに登録している電話番号': 'phone',
-  'タックスナップに登録しているメールアドレス': 'email',
+  'ハコベルに登録しているメールアドレス': 'email',
+  'これまでにタックスナップの有料プランを契約したことがありますか': 'paid_before',
+  'タックスナップに登録しているメールアドレス（ハコベルと違う場合）': 'taxnap_email',
   '個人情報の提供への同意': 'consent'
 };
 
@@ -186,7 +191,8 @@ function doPost(e) {
     }
     if (data.phone) data.phone = normalizePhone_(data.phone);
     if (kind === 'discount') {
-      data.coupon = issueCoupon_(data.email, '青色申告のみ', data.name);
+      // ページ側で「有料プランの契約歴なし」のチェックが必須。無い送信にはクーポンを出さない
+      data.coupon = data.new_user ? issueCoupon_(data.email, '青色申告のみ', data.name) : '対象外（契約歴の確認なし）';
     }
     appendRow_(kind, data);
     return jsonOut_({ ok: true });
@@ -224,7 +230,13 @@ function onApplyFormSubmit(e) {
     });
     if (data.invoice_no) data.invoice_no = normalizeInvoiceNo_(data.invoice_no);
     if (data.phone) data.phone = normalizePhone_(data.phone);
-    data.coupon = data.email ? issueCoupon_(data.email, '申請フォーム', data.name) : '';
+    // 有料プランの契約歴がある人はクーポン対象外（キャッシュバックは対象）
+    if (String(data.paid_before || '').indexOf('はい') === 0) {
+      data.coupon = '対象外（有料契約歴あり）';
+      sendExistingUserMail_(data.email, data.name);
+    } else {
+      data.coupon = data.email ? issueCoupon_(data.email, '申請フォーム', data.name) : '';
+    }
     appendRow_('applied', data);
     markApplied_(data.email);
   } finally {
@@ -406,10 +418,14 @@ function sendGuideMail_(d) {
     '3. 通知に記載された登録番号（T＋13桁）を、下の申請フォームに入力してください',
     '   ' + prop_('FORM_URL'),
     '',
+    '■ タックスナップのアカウント',
+    '・ハコベルに登録しているメールアドレス（このメールの宛先）で登録してください。キャンペーンの対象確認に使います',
+    '',
     '■ ご注意',
     '・インボイス登録をすると課税事業者となり、登録日から消費税の申告・納税が必要になります',
     '　（納税額を軽くする特例があります。詳しくは上記の国税庁の案内をご覧ください）',
     '・申請フォームの送信後、ハコベル特別価格（1年目19,800円）のクーポンをお送りします',
+    '　※ これまでにタックスナップの有料プランを契約したことがある方は、クーポンの対象外です（キャッシュバックは対象です）',
     '・キャッシュバックの条件：2027年のハコベル経由の取引額が100万円以上、かつインボイス番号をハコベルに登録していること',
     '　（2028年1月を目処に、ハコベルから19,800円をキャッシュバックします）',
     prop_('DEADLINE') ? '・申請の締切：' + prop_('DEADLINE') : '・申請の締切：？？？',
@@ -453,13 +469,18 @@ function sendCouponMail_(email, name, code) {
     '',
     '■ クーポンコード：' + code,
     '',
+    '■ クーポンの対象',
+    '★ これまでにタックスナップの有料プランを契約したことがある方は、対象外です',
+    '　（対象外の方がクーポンを使った場合、お申し込みを取り消すことがあります）',
+    '',
     '■ 使い方',
-    '1. こちらからタックスナップにログイン（初めての方は新規登録）：' + web,
+    '1. こちらからタックスナップにログイン：' + web,
+    '   初めての方は、ハコベルに登録しているメールアドレス（このメールの宛先）で新規登録してください',
     '2. 料金プランの画面で「安心プラン」を選び、クーポンコードを入力してお申し込みください',
     '',
     '■ ご注意',
     '・割引はWebからのお申し込みに限ります（App Store／Google Play での購入には使えません）',
-    '・クーポンはお一人さま1回限り、初めてのご契約に限り使えます',
+    '・クーポンはお一人さま1回限り、タックスナップの有料プランを初めて契約する方に限り使えます',
     '・キャッシュバックは、2027年のハコベル経由の取引額が100万円以上で、インボイス番号をハコベルに登録している方が対象です（2028年1月を目処）',
     footer_()
   ].join('\n') : [
@@ -470,6 +491,24 @@ function sendCouponMail_(email, name, code) {
     footer_()
   ].join('\n');
   return mail_(email, '【タックスナップ】ハコベル特別価格クーポンのお届け', body, code ? 'coupon' : 'coupon_pending');
+}
+
+/** 申請フォームで「有料プランの契約歴あり」と答えた方への受付メール（クーポンなし） */
+function sendExistingUserMail_(email, name) {
+  var body = [
+    (name || '') + ' 様',
+    '',
+    'インボイス申請フォームのご送信ありがとうございます。受け付けました。',
+    '',
+    '■ クーポンについて',
+    'これまでにタックスナップの有料プランを契約したことがある方は、ハコベル特別価格のクーポンの対象外のため、クーポンはお送りしていません。',
+    '',
+    '■ キャッシュバックについて',
+    'キャッシュバックは対象です。2027年のハコベル経由の取引額が100万円以上で、インボイス番号をハコベルに登録している方に、',
+    '2028年1月を目処にハコベルから19,800円をキャッシュバックします。',
+    footer_()
+  ].join('\n');
+  return mail_(email, '【タックスナップ】インボイス申請の受付のお知らせ', body, 'existing_user');
 }
 
 function mail_(to, subject, body, type) {

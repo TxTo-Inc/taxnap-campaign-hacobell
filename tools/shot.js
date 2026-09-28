@@ -33,7 +33,7 @@ const { chromium } = require('playwright');
   await p.goto(url); await next(); await pick('optsChoice', '青色申告だけしたい'); await next();
   await p.fill('#dName', '山田 花子'); await p.fill('#dEmail', 'hanako@example.com'); await p.fill('#dPhone', '08011112222');
   await pick('optsReason', '消費税'); await pick('optsReason', 'その他'); await p.fill('#reasonOther', 'テスト');
-  await p.check('#dConsent'); await shot('08_discount'); await next(); await p.waitForTimeout(300); await shot('09_discount_done');
+  await p.check('#dConsent'); console.log('契約歴チェック前の送信ボタン無効:', await p.isDisabled('#dSubmit')); await p.check('#dNew'); await shot('08_discount'); await next(); await p.waitForTimeout(300); await shot('09_discount_done');
 
   // 選択肢3 → 診断（白色・500万・経費40%）
   await p.goto(url); await next(); await pick('optsChoice', '確かめたい'); await next();

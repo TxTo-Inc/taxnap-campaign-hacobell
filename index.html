@@ -214,7 +214,7 @@ textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92r
         <tr><th>時期</th><td>2027年の実績確定後、2028年1月を目処</td></tr>
         <tr><th>支払方法</th><td data-cfg="payMethod"></td></tr>
       </table>
-      <div class="card-note">※ 特別価格（19,800円）は、Webからのお申し込み（安心プラン）に限ります。App Store／Google Playでの購入は対象外です<br>※ インボイス登録をしない方は、特別価格でのご利用のみとなり、キャッシュバックの対象外です<br>※ 翌年からは通常価格でのご利用となります</div>
+      <div class="card-note">※ 特別価格（19,800円）は、Webからのお申し込み（安心プラン）に限ります。App Store／Google Playでの購入は対象外です<br>※ インボイス登録をしない方は、特別価格でのご利用のみとなり、キャッシュバックの対象外です<br>※ 翌年からは通常価格でのご利用となります<br>※ <b>これまでにタックスナップの有料プランを契約したことがある方は、特別価格（クーポン）の対象外</b>です。キャッシュバックは対象です</div>
     </div>
 
     <div class="card">
@@ -272,6 +272,7 @@ textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92r
     <div class="q-number">STEP 3</div>
     <div class="q-title">申請フォームに入力してください</div>
     <div class="q-subtitle">送信後、ハコベル特別価格（1年目19,800円）のクーポンをメールでお送りします</div>
+    <div class="warn-box"><div class="warn-title">⚠️ すでにタックスナップをご利用の方へ</div><div class="warn-body">これまでにタックスナップの<b>有料プランを契約したことがある方は、クーポン（特別価格）の対象外</b>です。キャッシュバックは、条件を満たせば対象です。</div></div>
     <div class="card">
       <div class="card-title">📝 ご用意いただくもの</div>
       <div class="card-body" id="applyNeeds"></div>
@@ -292,9 +293,9 @@ textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92r
       <input class="text-input" id="uName" autocomplete="name" placeholder="例 山田 太郎">
     </div>
     <div class="field">
-      <label class="field-label" for="uEmail">メールアドレス<span class="req">必須</span></label>
+      <label class="field-label" for="uEmail">ハコベルに登録しているメールアドレス<span class="req">必須</span></label>
       <input class="text-input" id="uEmail" type="email" autocomplete="email" placeholder="example@mail.com">
-      <div class="field-help">タックスナップに登録済み（または今後登録する）のメールアドレスをご入力ください</div>
+      <div class="field-help"><b>タックスナップのアカウントも、このメールアドレスで登録してください。</b>キャンペーンの対象確認に使います</div>
       <div class="error-msg" id="uEmailError">メールアドレスの形式をご確認ください</div>
     </div>
     <div class="field">
@@ -322,7 +323,7 @@ textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92r
     <div class="steps">
       <div class="step-row"><span class="step-num">1</span><span class="step-text">税務署に「適格請求書発行事業者の登録申請書」を提出<small>マイナンバーカードがあれば、e-Taxでスマホから提出できます。2027年1月1日から登録するには、2026年12月17日（木）までに申請してください</small></span></div>
       <div class="step-row"><span class="step-num">2</span><span class="step-text">税務署から登録の通知が届く<small>届くまでの期間は時期により異なります。その間、リマインドのメールでお知らせします</small></span></div>
-      <div class="step-row"><span class="step-num">3</span><span class="step-text">登録番号（T＋13桁）を申請フォームに入力<small>入力後、ハコベル特別価格（1年目19,800円）のクーポンをメールでお送りします。申請の締切：<span data-cfg="deadline"></span></small></span></div>
+      <div class="step-row"><span class="step-num">3</span><span class="step-text">登録番号（T＋13桁）を申請フォームに入力<small>入力後、ハコベル特別価格（1年目19,800円）のクーポンをメールでお送りします（有料プランを契約したことがある方は対象外）。申請の締切：<span data-cfg="deadline"></span></small></span></div>
     </div>
     <div class="warn-box">
       <div class="warn-title">⚠️ ご注意</div>
@@ -336,15 +337,16 @@ textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92r
     <div class="q-number">STEP 2</div>
     <div class="q-title">ハコベル特別価格のクーポンをお送りします</div>
     <div class="q-subtitle">インボイス登録はせず青色申告だけしたい方も、タックスナップの安心プランを1年目19,800円（税抜・通常29,800円）でご利用いただけます。<b>キャッシュバックの対象外</b>です</div>
+    <div class="warn-box"><div class="warn-title">⚠️ すでにタックスナップをご利用の方へ</div><div class="warn-body">これまでにタックスナップの<b>有料プランを契約したことがある方は、クーポン（特別価格）の対象外</b>です。</div></div>
 
     <div class="field">
       <label class="field-label" for="dName">氏名<span class="req">必須</span></label>
       <input class="text-input" id="dName" autocomplete="name" placeholder="例 山田 太郎">
     </div>
     <div class="field">
-      <label class="field-label" for="dEmail">メールアドレス<span class="req">必須</span></label>
+      <label class="field-label" for="dEmail">ハコベルに登録しているメールアドレス<span class="req">必須</span></label>
       <input class="text-input" id="dEmail" type="email" autocomplete="email" placeholder="example@mail.com">
-      <div class="field-help">クーポンはこのアドレスにお送りします</div>
+      <div class="field-help">クーポンはこのアドレスにお送りします。<b>タックスナップのアカウントも、このメールアドレスで登録してください</b></div>
       <div class="error-msg" id="dEmailError">メールアドレスの形式をご確認ください</div>
     </div>
     <div class="field">
@@ -362,6 +364,7 @@ textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92r
     </div>
 
     <div class="consent-box">入力内容は、株式会社タックスナップが、クーポンの送付およびキャンペーン対象者の確認に利用します。対象者の確認のため、電話番号をハコベル株式会社に照会することがあります。登録しない理由は集計してキャンペーンの改善に使い、個人が分かる形でハコベル株式会社に提供することはありません。</div>
+    <label class="consent-check"><input type="checkbox" id="dNew"><span>これまでにタックスナップの<b>有料プランを契約したことはありません</b></span></label>
     <label class="consent-check"><input type="checkbox" id="dConsent"><span><a href="https://taxnap.com/privacy_policy" target="_blank" rel="noopener">プライバシーポリシー</a>と上記の利用目的に同意します</span></label>
 
     <button class="btn-next" id="dSubmit" disabled onclick="submitDiscount()">クーポンを受け取る</button>
@@ -377,10 +380,11 @@ textarea.text-input{resize:vertical;min-height:70px;display:block;font-size:.92r
     </div>
     <div class="card-title">クーポンの使い方</div>
     <div class="steps">
-      <div class="step-row"><span class="step-num">1</span><span class="step-text">Webからタックスナップにログイン<small>初めての方は新規登録してください</small></span></div>
+      <div class="step-row"><span class="step-num">1</span><span class="step-text">Webからタックスナップにログイン<small>初めての方は、<b>ハコベルに登録しているメールアドレス</b>で新規登録してください</small></span></div>
       <div class="step-row"><span class="step-num">2</span><span class="step-text">料金プランの画面で「安心プラン」を選ぶ</span></div>
       <div class="step-row"><span class="step-num">3</span><span class="step-text">クーポンコードを入力してお申し込み<small>App Store／Google Playでの購入には使えません</small></span></div>
     </div>
+    <div class="warn-box"><div class="warn-title">⚠️ すでにタックスナップをご利用の方へ</div><div class="warn-body">これまでにタックスナップの<b>有料プランを契約したことがある方は、クーポン（特別価格）の対象外</b>です。対象外の方がクーポンを使った場合、お申し込みを取り消すことがあります。</div></div>
     <a class="btn-next webLink" href="#" target="_blank" rel="noopener">Webでタックスナップを開く →</a>
   </div>
 
@@ -618,7 +622,7 @@ const KOJO_AFTER = 750000;   // タックスナップで複式簿記＋e-Tax＋�
    ============================================================ */
 const CHOICES = [
   {emoji:'💴', text:'1年目の利用料のキャッシュバックを受けたい', sub:'インボイス登録＋タックスナップのご利用（条件あり）', to:'sStatus'},
-  {emoji:'📘', text:'青色申告だけしたい', sub:'インボイス登録はしない。1年目19,800円で利用（キャッシュバック対象外）', to:'sDiscount'},
+  {emoji:'📘', text:'青色申告だけしたい', sub:'インボイス登録はしない。1年目19,800円で利用（キャッシュバック対象外・有料プランを初めて契約する方のみ）', to:'sDiscount'},
   {emoji:'🔍', text:'手取りがいくら増えるか確かめたい', sub:'白色申告の方向け。売上・経費から約1分で診断', to:'sD1'}
 ];
 const STATUSES = [
@@ -752,13 +756,17 @@ function bindForm(prefix, submitId) {
     const email = val(prefix + 'Email');
     const phone = val(prefix + 'Phone');
     const ok = val(prefix + 'Name') && emailOk(email) && phoneOk(phone)
-               && document.getElementById(prefix + 'Consent').checked;
+               && document.getElementById(prefix + 'Consent').checked
+               && (!document.getElementById(prefix + 'New') || document.getElementById(prefix + 'New').checked);
     document.getElementById(submitId).disabled = !ok;
     flag('Email', email !== '' && !emailOk(email));
     flag('Phone', phone !== '' && !phoneOk(phone));
   };
   ids.forEach(id => document.getElementById(id).addEventListener('input', refresh));
-  document.getElementById(prefix + 'Consent').addEventListener('change', refresh);
+  [prefix + 'Consent', prefix + 'New'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('change', refresh);
+  });
 }
 
 /* ============================================================
@@ -792,9 +800,9 @@ function nextFromStatus() {
   document.getElementById('applyLink').href = url;
   document.getElementById('applyNeeds').innerHTML = (s.key === 'B'
     ? '・インボイス登録番号（T＋13桁）<br>' : '') +
-    '・ハコベルに登録している電話番号<br>・タックスナップに登録しているメールアドレス<br>' +
-    '<span class="card-note">まだタックスナップに登録していない方は、これから登録に使うメールアドレスでOKです</span>' +
-    (s.key === 'A' ? '<span class="card-note">※ すでにハコベルに番号を登録済みの方のキャッシュバックの扱い：' + cfgHtml('typeA') + '</span>' : '');
+    '・ハコベルに登録している電話番号<br>・ハコベルに登録しているメールアドレス' +
+    '<div class="card-note">タックスナップのアカウントも、このメールアドレスで登録してください（まだの方はこれから登録）。すでに別のメールアドレスで登録している方は、フォームでそのアドレスもお知らせください</div>' +
+    (s.key === 'A' ? '<div class="card-note">※ すでにハコベルに番号を登録済みの方のキャッシュバックの扱い：' + cfgHtml('typeA') + '</div>' : '');
   go('sApply');
 }
 
@@ -838,6 +846,7 @@ function submitDiscount() {
   withLoading(post({
     _kind: 'discount',
     name: val('dName'), email: val('dEmail'), phone: normPhone(val('dPhone')),
+    new_user: '有料契約歴なし（本人申告）',
     reasons: answers.reasons.join(', '), reason_free: val('reasonOther'),
     consent: '同意'
   }), 'sDiscountDone');
